@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.action.extension" value="do" />
+	<constant name="struts.multipart.maxSize" value="55000000"/>
+	<constant name="struts.multipart.saveDir" value="/temp"></constant>
+	<!-- struts 2的配置文件修改后，系统是否自动重新加载该文件 -->
+	<constant name="struts.devMode" value="false" />
+	
+	<constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+	
+	<package name="json" namespace="/" extends="json-default">
+        <!-- 登录 -->
+        <action name="login_*" class="com.sttri.action.LoginAction" method="{1}">
+             <result name="index" type="redirect">/index.jsp</result>
+             <result name="login">/login.jsp</result>
+             <result name="logout" type="redirect">/login.jsp</result>
+        </action>
+		
+        <!-- 用户 -->
+        <action name="user_*" class="com.sttri.action.UserAction" method="{1}">
+            <result name="success" type="json">
+				<param name="includeProperties"/>
+			</result>
+        </action>
+		
+        <!-- 企业 -->
+        <action name="company_*" class="com.sttri.action.CompanyAction" method="{1}">
+            <result name="success" type="json">
+				<param name="includeProperties"/>
+			</result>
+        </action>
+		
+        <!-- 企业组织 -->
+        <action name="companyGroup_*" class="com.sttri.action.CompanyGroupAction" method="{1}">
+            <result name="success" type="json">
+				<param name="includeProperties"/>
+			</result>
+        </action>
+		
+        <!-- 设备 -->
+        <action name="dev_*" class="com.sttri.action.DevAction" method="{1}">
+            <result name="success" type="json">
+				<param name="includeProperties"/>
+			</result>
+        </action>
+        
+         <!-- 设备日志 -->
+        <action name="devLog_*" class="com.sttri.action.DevLogAction" method="{1}">
+            <result name="success" type="json">
+				<param name="includeProperties"/>
+			</result>
+        </action>
+        
+         <!-- 角色 -->
+        <action name="role_*" class="com.sttri.action.RoleAction" method="{1}">
+            <result name="success" type="json">
+				<param name="includeProperties"/>
+			</result>
+        </action>
+        
+         <!-- 菜单 -->
+        <action name="menu_*" class="com.sttri.action.MenuAction" method="{1}">
+            <result name="success" type="json">
+				<param name="includeProperties"/>
+			</result>
+        </action>
+        
+         <!-- 设备直播时长 -->
+        <action name="devRecordTime_*" class="com.sttri.action.DevRecordTimeAction" method="{1}">
+            <result name="success" type="json">
+				<param name="includeProperties"/>
+			</result>
+        </action>
+        
+         <!-- 会议报表 -->
+        <action name="meetingRecord_*" class="com.sttri.action.MeetingAction" method="{1}">
+            <result name="success" type="json">
+				<param name="includeProperties"/>
+			</result>
+        </action>
+        
+         <!-- 会议资源 -->
+        <action name="meetingResource_*" class="com.sttri.action.MeetingResourceAction" method="{1}">
+            <result name="success" type="json">
+				<param name="includeProperties"/>
+			</result>
+        </action>
+        
+         <!-- 晨会自评问题管理 -->
+        <action name="question_*" class="com.sttri.action.QuestionAction" method="{1}">
+            <result name="success" type="json">
+				<param name="includeProperties"/>
+			</result>
+        </action>
+        
+         <!-- 晨会自评问题管理 -->
+        <action name="userQuestion_*" class="com.sttri.action.UserQuestionAction" method="{1}">
+            <result name="success" type="json">
+				<param name="includeProperties"/>
+			</result>
+        </action>
+    </package>
+</struts>

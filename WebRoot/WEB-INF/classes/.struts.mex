@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Struts2Diagram version="2.0">
+  <package name="json" location="0,0" size="0,0">
+    <action name="login_*" location="0,0" size="0,0">
+      <result name="index">
+        <resourceEdge source="index" routing="0" target="index.jsp" />
+      </result>
+      <result name="login">
+        <resourceEdge source="login" routing="0" target="login.jsp" />
+      </result>
+      <result name="logout">
+        <resourceEdge source="logout" routing="0" target="login.jsp" />
+      </result>
+    </action>
+    <action name="user_*" location="0,0" size="0,0">
+      <result name="success" />
+    </action>
+    <action name="company_*" location="0,0" size="0,0">
+      <result name="success" />
+    </action>
+    <action name="dev_*" location="0,0" size="0,0">
+      <result name="success" />
+    </action>
+    <action name="mediaServer_*" location="0,0" size="0,0">
+      <result name="success" />
+    </action>
+    <action name="control_*" location="0,0" size="0,0">
+      <result name="success" />
+    </action>
+  </package>
+  <webResource name="index.jsp" path="/index.jsp" location="0,0" size="0,0" />
+  <webResource name="login.jsp" path="/login.jsp" location="0,0" size="0,0" />
+</Struts2Diagram>
+

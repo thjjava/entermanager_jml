@@ -1,0 +1,63 @@
+input,textarea,select{
+	border:1px solid #ccc;
+	width: 80%;
+}
+
+.spanStyle{
+	font-size:12px;
+	color:#fd0101;
+}
+
+.query{
+	margin-bottom: 8px;
+	font-size: 12px;
+}
+
+.query-title{
+	border-left: 1px solid #8DB2E3;
+	border-right: 1px solid #8DB2E3;
+	border-top: 1px solid #8DB2E3;
+}
+
+.query-title-background{
+	background: url('../js/themes/default/images/panel_title.png') repeat-x;
+	width: 100%;
+	height: 26px;
+}
+
+.query-title-icon{
+	float: left;
+	width: 16px;
+	height: 16px;
+	background: url('../js/themes/icons/search.png');
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
+.query-title-font{
+	font-weight: bold;
+	color: #15428b;
+	padding-top: 7px;
+}
+
+.query-title-show{
+	float: right;
+	margin-right: 5px;
+	margin-top: -15px;
+}
+
+.updateTdBackGround{
+	background-color: red;
+}
+
+a{
+	text-decoration: none;
+}
+
+img{
+	cursor: pointer;
+}
+
+
+
+

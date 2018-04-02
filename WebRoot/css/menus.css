@@ -1,0 +1,56 @@
+
+ul,li{ 
+/*清除ul和li上的小圆点*/ 
+list-style:none; 
+} 
+ul{ 
+/*清除子菜单的缩进值*/ 
+padding:0; 
+margin:0; 
+
+} 
+.hmain{ 
+/*background-image:url(../images/title.gif); //前面的小三角 */
+background-repeat:repeat-x; 
+width:100px;
+}
+.hmainc{ 
+/*background-image:url(../images/title.gif); //前面的小三角 */
+background-repeat:repeat-x; 
+width:auto;
+}
+li{ 
+/*background-color:blue; //背景图片覆盖背景色*/ 
+} 
+a{ 
+//取消所有的下划线 
+text-decoration:none; 
+padding-left:20px; 
+display:block; /*块集元素可充满区域*/ 
+display:inline-block; 
+width:100px; 
+padding-top:3px; 
+padding-bottom:3px;
+} 
+.hmain a{ 
+color:white; 
+/*background-image:url(../../images/menu/arrow.png); */
+background-repeat:no-repeat; 
+background-position:3px center;
+font-size:13px;
+} 
+.hmain li a{ 
+color:#ffffff;
+background-color:#4881ee;
+border:solid 1px #aaaaaa;
+/*background-image:url(../images/button.png);*/
+font-size:13px;
+} 
+.hmain ul{ 
+display:none; 
+} 
+.hmain{ 
+float:left; 
+margin-right:1px; 
+}<strong> 
+</strong> 
