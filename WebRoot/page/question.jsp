@@ -46,10 +46,11 @@
 						<tr>
 							<td bgcolor="#ffffff" align="center">
 								类型：
-								<select name="type" id="type" style="width: 120px;">
+								<select name="queryType" id="queryType" style="width: 120px;">
 										<option value="">全部</option>
 										<option value="0">是非题</option>
 										<option value="1">问答题</option>
+										<option value="2">选择题</option>
 									</select>
 							</td>
 							<td bgcolor="#ffffff" align="center">
@@ -80,6 +81,7 @@
 								</td>
 								<td>
 									<input type="text" name="question.id" id="id">
+									<input type="text" name="question.comId" id="comId">
 									<input type="text" name="question.status" id="status">
 									<input type="text" name="question.editUser" id="editUser">
 									<input type="text" name="question.addTime" id="addTime">
@@ -90,9 +92,10 @@
 									类型：
 								</td>
 								<td>
-									<select name="question.type" id="type">
+									<select name="question.type" id="type" onchange="showOrhide();">
 										<option value="0">是非题</option>
 										<option value="1">问答题</option>
+										<option value="2">选择题</option>
 									</select>
 								</td>
 							</tr>
@@ -102,6 +105,38 @@
 								</td>
 								<td>
 									<input type="text" name="question.question" id="question">
+								</td>
+							</tr>
+							<tr id="tr1">
+								<td align="right" width="30%;">
+									答案1：
+								</td>
+								<td>
+									<input type="text" name="question.answer1" id="answer1">
+								</td>
+							</tr>
+							<tr id="tr2">
+								<td align="right" width="30%;">
+									答案2：
+								</td>
+								<td>
+									<input type="text" name="question.answer2" id="answer2">
+								</td>
+							</tr>
+							<tr id="tr3">
+								<td align="right" width="30%;">
+									答案3：
+								</td>
+								<td>
+									<input type="text" name="question.answer3" id="answer3">
+								</td>
+							</tr>
+							<tr id="tr4">
+								<td align="right" width="30%;">
+									答案4：
+								</td>
+								<td>
+									<input type="text" name="question.answer4" id="answer4">
 								</td>
 							</tr>
 						</table>

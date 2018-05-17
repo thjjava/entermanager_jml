@@ -93,9 +93,17 @@ public class UserQuestionAction extends BaseAction {
 				response.addHeader("Content-Disposition", "attachment;filename="+
 				new String(fileName.getBytes("gb2312"),"iso8859-1"));
 				Map<String, String> map=new LinkedHashMap<String, String>();
-				map.put("devNo", "自评者账号");
-				map.put("questionName", "问题");
-				map.put("answer", "答案");
+				map.put("higherGroupName", "大区");
+				map.put("parentGroupName", "市级部");
+				map.put("curGroupName", "当前组织");
+				map.put("devName", "会议组织人");
+				map.put("answer1", "仪式感");
+				map.put("answer2", "昨日追踪");
+				map.put("answer3", "今日安排");
+				map.put("answer4", "经销商参会");
+				map.put("answer5", "参会人数");
+				map.put("timeLen", "会议时长");
+				map.put("score", "得分");
 				map.put("addTime", "时间");
 				response.setContentType("application/x-download");
 	        	com.sttri.util.ExcelUtil.ImportExcel(list, response.getOutputStream(), map, "晨会自评");
@@ -146,6 +154,8 @@ public class UserQuestionAction extends BaseAction {
 		List<Object> param = new ArrayList<Object>();
 		try {
 			StringBuffer jpql = new StringBuffer("1 =1 ");
+			jpql.append(" and o.comId =? ");
+			param.add(u.getCompany().getId());
 			if(!addTimeStart.equals("")){
 				jpql.append(" and o.addTime >=?");
 				param.add(addTimeStart);
@@ -186,7 +196,7 @@ public class UserQuestionAction extends BaseAction {
 				qu.setTotal(pageView.getTotalRecord());
 				pw.print(new JsonView(qu));
 			}else{
-				String json = "{\"total\":1,\"rows\":[{\"answer\":\"无记录数据\"}]}";
+				String json = "{\"total\":1,\"rows\":[{\"answer1\":\"无记录数据\"}]}";
 				pw.print(json);
 			}
 			pw.flush();
@@ -195,6 +205,7 @@ public class UserQuestionAction extends BaseAction {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	public String getRows() {
 		return rows;

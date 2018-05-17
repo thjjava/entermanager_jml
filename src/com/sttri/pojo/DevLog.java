@@ -13,7 +13,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 
 /**
- * ÓÃ»§ÊÖ»úÓ²¼şĞÅÏ¢
+ * ç”¨æˆ·æ‰‹æœºç¡¬ä»¶ä¿¡æ¯
  */
 @Entity
 @Table(name = "dev_log")
@@ -31,9 +31,9 @@ public class DevLog implements java.io.Serializable {
 	private String addTime;
 	private String devNo;
 	private String devName;
-	private String curGroupName;//Éè±¸µ±Ç°×éÖ¯
-	private String parentGroupName;//Éè±¸µÄÉÏ¼¶×éÖ¯
-	private String higherGroupName;//Éè±¸ÉÏÉÏ¼¶×éÖ¯
+	private String curGroupName;//è®¾å¤‡å½“å‰ç»„ç»‡
+	private String parentGroupName;//è®¾å¤‡çš„ä¸Šçº§ç»„ç»‡
+	private String higherGroupName;//è®¾å¤‡ä¸Šä¸Šçº§ç»„ç»‡
 	
 	public DevLog() {
 	}
@@ -142,7 +142,7 @@ public class DevLog implements java.io.Serializable {
 		this.devName = devName;
 	}
 
-	@Formula("(select case when g.groupName is NULL then 'ÎŞ' else g.groupName end from company_group g left join tbl_dev d on d.groupId=g.id where d.id = devId)")
+	@Formula("(select case when g.groupName is NULL then 'æ— ' else g.groupName end from company_group g left join tbl_dev d on d.groupId=g.id where d.id = devId)")
 	public String getCurGroupName() {
 		return curGroupName;
 	}
@@ -151,7 +151,7 @@ public class DevLog implements java.io.Serializable {
 		this.curGroupName = curGroupName;
 	}
 	
-	@Formula("(select case when p.groupName is NULL then 'ÎŞ' else p.groupName end from company_group g LEFT JOIN company_group p on p.ID=g.Pid left join tbl_dev d on d.groupId=g.id where d.id = devId)")
+	@Formula("(select case when p.groupName is NULL then 'æ— ' else p.groupName end from company_group g LEFT JOIN company_group p on p.ID=g.Pid left join tbl_dev d on d.groupId=g.id where d.id = devId)")
 	public String getParentGroupName() {
 		return parentGroupName;
 	}
@@ -160,7 +160,7 @@ public class DevLog implements java.io.Serializable {
 		this.parentGroupName = parentGroupName;
 	}
 	
-	@Formula("(select case when r.groupName is NULL then 'ÎŞ' else r.groupName end from company_group g left join company_group p on p.id=g.pId left join company_group r on r.id=p.pId left join tbl_dev d on d.groupId=g.id where d.id = devId)")
+	@Formula("(select case when r.groupName is NULL then 'æ— ' else r.groupName end from company_group g left join company_group p on p.id=g.pId left join company_group r on r.id=p.pId left join tbl_dev d on d.groupId=g.id where d.id = devId)")
 	public String getHigherGroupName() {
 		return higherGroupName;
 	}

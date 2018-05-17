@@ -33,4 +33,14 @@ public interface IDevService {
 	public void deletebyid(Object id);
 	
 	public void group(String ids, String groupId);
+	
+	/**
+     * 根据条件来进行查询
+     * @param wherejpql
+     * @param orderby
+     * @param queryParams
+     * @return
+     */
+	public List<TblDev> getResultList(String wherejpql,LinkedHashMap<String, String> orderby);
+	
 }

@@ -60,5 +60,5 @@ public class UserQuestionServiceImpl implements IUserQuestionService {
 		// TODO Auto-generated method stub
 		return dao.getScrollData(UserQuestion.class, firstindex, maxresult, wherejpql, queryParams, orderby);
 	}
-	
+
 }

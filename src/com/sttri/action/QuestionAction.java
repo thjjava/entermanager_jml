@@ -41,7 +41,10 @@ public class QuestionAction extends BaseAction {
 		PageView<TblQuestion> pageView = new PageView<TblQuestion>(row, pages);
 		List<Object> param = new ArrayList<Object>();
 		try {
+			TblUser user = WorkUtil.getCurrUser(request);
 			StringBuffer jpql = new StringBuffer(" 1=1 ");
+			jpql.append(" and o.comId =?");
+			param.add(user.getCompany().getId());
 			if (!"".equals(type)) {
 				jpql.append(" and o.type =?");
 				param.add(Integer.parseInt(type));
@@ -98,6 +101,7 @@ public class QuestionAction extends BaseAction {
 			}else{
 				TblUser user = WorkUtil.getCurrUser(request);
 				question.setId(Util.getUUID(6));
+				question.setComId(user.getCompany().getId());
 				question.setEditUser(user.getAccount());
 				question.setAddTime(Util.dateToStr(new Date()));
 				question.setStatus(0);

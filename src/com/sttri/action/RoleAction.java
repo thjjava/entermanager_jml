@@ -243,16 +243,13 @@ public class RoleAction extends BaseAction {
 		String mIds = Util.dealNull(request.getParameter("menus"));
 		try {
 			PrintWriter pw = response.getWriter();
-			boolean flag = false;
-			if ("".equals(mIds)) {
-				List<RoleMenus> rmList = this.roleMenusService.getResultList(" o.role.id=?", null, new Object[]{roleId});
-				if (rmList != null && rmList.size() >0) {
-					for (RoleMenus roleMenus : rmList) {
-						this.roleMenusService.deletebyid(roleMenus.getId());
-					}
-					flag = true;
+			List<RoleMenus> rmList = this.roleMenusService.getResultList(" o.role.id=?", null, new Object[]{roleId});
+			if (rmList != null && rmList.size() >0) {
+				for (RoleMenus roleMenus : rmList) {
+					this.roleMenusService.deletebyid(roleMenus.getId());
 				}
-			}else {
+			}
+			if (!"".equals(mIds)) {
 				String[] array = mIds.split(",");
 				for (int i = 0; i < array.length; i++) {
 					if (!isRoleMenued(roleId, array[i])) {
@@ -263,20 +260,10 @@ public class RoleAction extends BaseAction {
 						roleMenus.setRole(role);
 						roleMenus.setMenus(menus);
 						this.roleMenusService.save(roleMenus);
-					}else {
-						List<RoleMenus> list = this.roleMenusService.getResultList("o.role.id=?", null, new Object[]{roleId});
-						for (int j = 0; j < list.size(); j++) {
-							if (!array[i].equals(list.get(j).getMenus().getId())) {
-								this.roleMenusService.deletebyid(list.get(j).getId());
-							}
-						}
 					}
 				}
-				flag = true;
 			}
-			if (flag) {
-				pw.print("success");
-			}
+			pw.print("success");
 			pw.flush();
 			pw.close();
 		} catch (Exception e) {

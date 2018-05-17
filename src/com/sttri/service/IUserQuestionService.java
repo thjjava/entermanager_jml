@@ -32,4 +32,5 @@ public interface IUserQuestionService {
 	public void deletebyids(Object[] array);
 
 	public void deletebyid(Object id);
+	
 }

@@ -9,7 +9,10 @@ var path = $('#path').val();
  * @type 
  */
 var tcolumn=[[
-			{field:'dev',title:'自评者账号',width:120,sortable:true,align:'center',
+            {field:'higherGroupName',title:'大区',width:120,sortable:true,align:'center'},
+            {field:'parentGroupName',title:'市级部',width:120,sortable:true,align:'center'},
+            {field:'curGroupName',title:'当前组织',width:120,sortable:true,align:'center'},
+			{field:'dev',title:'会议组织人',width:120,sortable:true,align:'center',
 				formatter:function(val,rec){
 					if(rec.dev!=null)
 						return rec.dev.devName;
@@ -17,18 +20,22 @@ var tcolumn=[[
 						return '无';
 				}
 			},
-			{field:'question',title:'问题',width:120,sortable:true,align:'center',
+			{field:'answer1',title:'仪式感',width:120,sortable:true,align:'center'},
+			{field:'answer2',title:'昨日追踪',width:120,sortable:true,align:'center'},
+			{field:'answer3',title:'今日安排',width:120,sortable:true,align:'center'},
+			{field:'answer4',title:'经销商参会',width:120,sortable:true,align:'center'},
+			{field:'answer5',title:'参会人数',width:120,sortable:true,align:'center'},
+			{field:'timeLen',title:'会议时长(分钟)',width:120,sortable:true,align:'center',
 				formatter:function(val,rec){
-					if(rec.question!=null)
-						return rec.question.question;
-					else
-						return '无';
-				}
-			},
-//			{field:'questionName',title:'答案',width:120,sortable:true,align:'center'},
-			{field:'answer',title:'答案',width:120,sortable:true,align:'center'},
+					if(rec.timeLen > 30){
+						val = rec.timeLen / 60;
+						return val.toFixed(0);
+					}else {
+						return 1;
+					}
+				}},
+			{field:'score',title:'得分',width:120,sortable:true,align:'center'},
 			{field:'addTime',title:'创建时间',width:120,sortable:true,align:'center'}
-			
 			]];
 			
 /**

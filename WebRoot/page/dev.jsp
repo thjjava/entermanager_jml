@@ -81,8 +81,7 @@
 		<table id="datalist"></table>
 		<!-- 新增和修改 -->
 		<div id="addWindow" class="easyui-window" title="设备信息" closed="true"
-			collapsible="false" minimizable="false" maximizable="false"
-			iconCls="icon-add"
+			collapsible="false" minimizable="false" maximizable="false" iconCls="icon-add"
 			style="width: 650px; height: 300px; display: none;" resizable="false">
 			<div class="easyui-layout" fit="true">
 				<div region="center" border="false"
@@ -218,5 +217,43 @@
 				</div>
 			</div>
 		</div>
+		
+		<!-- 批量导入开始 -->
+		<div id="importWindow" class="easyui-window" title="设备信息" closed="true"
+			collapsible="false" minimizable="false" maximizable="false" iconCls="icon-add"
+			style="width: 500px; height: 300px; display: none;" resizable="false">
+			<div class="easyui-layout" fit="true">
+				<div region="center" border="false"
+					style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+					<table width="100%" border="0" style="font-size: 13">
+						<tr>
+							<td align="right">&nbsp;</td>
+			    			<td>
+			    				<span style="color:red;">请先下载模板，按照模板要求批量导入数据</span>
+			    			</td>
+						</tr>
+						<tr>
+							<td align="right">文件：</td>
+			    			<td>
+			    				<form method="post" id="uploadForm" action="<%=path%>/dev_upload.do" enctype="multipart/form-data">
+			    					<input type="file" id="upload" name="upload" value="浏览">
+			    				</form>
+			    			</td>
+						</tr>
+					</table>
+				</div>
+				<div region="south" border="false"
+					style="text-align: center; height: 30px; line-height: 30px;">
+					<a id="downBtn" class="easyui-linkbutton" href="javascript:void(0)"
+						onclick="javascript:location.href='<%=path%>/excel/dev.xls'">下载模版</a>
+					<a id="subBtn" class="easyui-linkbutton" href="javascript:void(0)"
+						onclick="importExcel();">导入</a>
+					<a class="easyui-linkbutton" href="javascript:void(0)"
+						onclick="closeDiv('importWindow');">取消</a>
+				</div>
+			</div>
+		</div>
+		<!-- 批量导入结束 -->
+		
 	</body>
 </html>

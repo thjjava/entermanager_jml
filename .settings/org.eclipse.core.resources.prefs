@@ -1,19 +1,2 @@
-#Wed Apr 12 14:48:52 CST 2017
 eclipse.preferences.version=1
-encoding//WebRoot/js/common/comm.js=UTF-8
-encoding//WebRoot/js/common/paging.js=UTF-8
-encoding//WebRoot/js/common/zTreeUtil.js=UTF-8
-encoding//WebRoot/js/outlook2.js=UTF-8
-encoding//WebRoot/js/page/clientusercount.js=UTF-8
-encoding//WebRoot/js/page/cms.js=UTF-8
-encoding//WebRoot/js/page/devlog.js=UTF-8
-encoding//WebRoot/js/page/function.js=UTF-8
-encoding//WebRoot/js/page/plugin.js=UTF-8
-encoding//WebRoot/js/page/province.js=UTF-8
-encoding//WebRoot/js/page/user.js=UTF-8
-encoding//WebRoot/js/page/util.js=UTF-8
-encoding//WebRoot/page/advertBrowse.html=UTF-8
-encoding//src/ApplicationMessage.properties=UTF-8
-encoding//src/com/sttri/pojo=GBK
-encoding//src/jdbc.properties=GBK
-encoding/<project>=UTF-8
+encoding//src/com/sttri/pojo/TblUser.java=UTF-8

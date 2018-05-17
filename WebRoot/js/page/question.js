@@ -15,6 +15,8 @@ var tcolumn=[[
 						return '是非题';
 					}else if(rec.type == '1'){
 						return '问答题';
+					}else if(rec.type == '2'){
+						return '选择题';
 					}else {
 						return '其他';
 					}
@@ -42,6 +44,7 @@ var tbar=[{
 			text:'新增',
 			iconCls:'icon-add',
 			handler:function(){
+				$("#tr1,#tr2,#tr3,#tr4").hide();
 				resetForm(wform);
 				openDiv(win);
 			}
@@ -68,6 +71,7 @@ var tbar=[{
  */
 $(function(){
 	init();
+	$("#tr1,#tr2,#tr3,#tr4").hide();
 }); 
 
 /**
@@ -81,7 +85,7 @@ function init(){
  * 查询
  */
 function query(){
-	$('#'+render).datagrid('reload', {"type":$("#type").val()});
+	$('#'+render).datagrid('reload', {"type":$("#queryType").val()});
 }
 
 
@@ -111,7 +115,7 @@ function submitForm(){
 		     		$.messager.alert('提示',"更新数据失败!");
 		     	}
 		    }
-		})
+		});
 	}
 }
 
@@ -127,12 +131,21 @@ function queryObjectbyID(url){
 			if(msg !=''){
 				var arry = eval("("+msg+")");
 				$('input[name="question.id"]').val(arry.id);
+				$('input[name="question.comId"]').val(arry.comId);
 				$('input[name="question.question"]').val(arry.question);
 				$('input[name="question.status"]').val(arry.status);
 				$('input[name="question.editUser"]').val(arry.editUser);
 				$('select[name="question.type"]').val(arry.type);
 				$('input[name="question.addTime"]').val(arry.addTime);
-				
+				$('input[name="question.answer1"]').val(arry.answer1);
+				$('input[name="question.answer2"]').val(arry.answer2);
+				$('input[name="question.answer3"]').val(arry.answer3);
+				$('input[name="question.answer4"]').val(arry.answer4);
+				if(arry.type==2){
+					$("#tr1,#tr2,#tr3,#tr4").show();
+				}else{
+					$("#tr1,#tr2,#tr3,#tr4").hide();
+				}
 				openDiv(win);
 			}else{
 				$.messager.alert('提示','信息不存在！');
@@ -202,5 +215,14 @@ function setInvalid(){
 	     		init();
 	     	}
 		}); 
+	}
+}
+
+function showOrhide(){
+	var type = $("#type").val();
+	if(type==2){
+		$("#tr1,#tr2,#tr3,#tr4").show();
+	}else{
+		$("#tr1,#tr2,#tr3,#tr4").hide();
 	}
 }

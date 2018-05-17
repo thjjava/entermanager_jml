@@ -1,6 +1,9 @@
 package com.sttri.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,9 +11,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.et.mvc.JsonView;
@@ -26,6 +35,7 @@ import com.sttri.service.ICompanyGroupService;
 import com.sttri.service.ICompanyService;
 import com.sttri.service.IDevLogService;
 import com.sttri.service.IDevService;
+import com.sttri.util.CreateFile;
 import com.sttri.util.Util;
 import com.sttri.util.WorkUtil;
 
@@ -36,6 +46,9 @@ public class DevAction extends BaseAction {
 	private String page;
 	
 	private TblDev dev;
+	private File upload;
+
+	private String uploadFileName;
 	
 	@Autowired
 	private IDevService devService;
@@ -618,6 +631,118 @@ public class DevAction extends BaseAction {
 		}
 	} */
 	
+	public void exportDevsToExcel(){
+		response.setCharacterEncoding("UTF-8");
+		String devNo = Util.dealNull(request.getParameter("devNo"));
+		String devName = Util.dealNull(request.getParameter("devName"));
+		String groupId = Util.dealNull(request.getParameter("groupId"));
+		String isGroup = Util.dealNull(request.getParameter("isGroup"));
+		TblUser u = WorkUtil.getCurrUser(request);
+		LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+		try {
+			StringBuffer jpql = new StringBuffer(" o.company.id='"+u.getCompany().getId()+"'");
+			if(isGroup.equals("yes"))
+				jpql.append(" and o.group is not null");
+			else if(isGroup.equals("no"))
+				jpql.append(" and o.group is null");
+			if(!"".equals(devNo)){
+				jpql.append(" and o.devNo like '%"+devNo+"%' ");
+			}
+			if(!"".equals(devName)){
+				jpql.append(" and o.devName like '%"+devName+"%' ");
+			}
+			
+			JSONArray array = new JSONArray();
+			if (u.getGroupId() != null || (groupId != null && !"".equals(groupId))) {
+				if (groupId == null || "".equals(groupId)) {
+					groupId = u.getGroupId();
+				}
+				CompanyGroup group = this.groupService.getById(groupId);
+				if (!group.getPid().equals("0")) {
+					array = getArray(groupId,array);
+					String jpqlStr = array.toString().replace("[", "(").replace("]", ")").replaceAll("\"", "'");
+					if (array != null && !array.equals("")) {
+						jpql.append(" and o.group.id in "+ jpqlStr);
+					}
+				}
+			}
+			orderBy.put("id", "asc");
+			List<TblDev> list = this.devService.getResultList(jpql.toString(), orderBy);
+			response.reset();//清除缓存
+			String fileName = "设备统计.xls";//文件名
+			//设置下载文件名
+			response.addHeader("Content-Disposition", "attachment;filename="+
+			new String(fileName.getBytes("gb2312"),"iso8859-1"));
+			Map<String, String> map=new LinkedHashMap<String, String>();
+			map.put("devName", "设备名称");
+			map.put("devNo", "设备编号");
+			response.setContentType("application/x-download");
+        	com.sttri.util.ExcelUtil.ImportExcel(list, response.getOutputStream(), map, "设备统计");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 批量导入设备账号，更新设备信息
+	 */
+	public void upload(){
+		response.setCharacterEncoding("UTF-8");
+		try {
+			PrintWriter pw = response.getWriter();
+			String saveFilePath = ServletActionContext.getServletContext().getRealPath(File.separator);
+			String wjml = "",key = "";
+			boolean createFolder = CreateFile.createFolder(saveFilePath+wjml);
+			if(createFolder){
+				if(upload!=null){
+					String oldfiletype = Util.getExtendName(this.getUploadFileName()).toLowerCase();
+					if(oldfiletype.equals(".xls")){
+						wjml = "uploadFile"+File.separator+"excel"+File.separator;
+						String newFileName = Util.getUUID(0)+"_"+this.getUploadFileName();
+						File file = new File(saveFilePath+wjml, newFileName);
+						if(file.exists())
+							file.delete();
+						FileUtils.copyFile(this.getUpload(), file);
+						wjml += newFileName;
+						if(File.separator.equals("\\") || File.separator.equals("/")){
+							InputStream stream = new FileInputStream(new File(saveFilePath+wjml));
+							Workbook wb=Workbook.getWorkbook(stream);
+							Sheet sheet=wb.getSheet(0);
+							int count=sheet.getRows();
+							for(int i=1;i<count;i++) {
+								Cell cell=sheet.getCell(0,i);
+								String devName=cell.getContents().trim();
+								cell= sheet.getCell(1,i);
+								String oldDevNo=cell.getContents().trim();
+								cell=sheet.getCell(2,i);
+								String newDevNo=cell.getContents().trim();
+								List<TblDev> dList = this.devService.getResultList(" o.devNo=?", null,new Object[]{oldDevNo});
+								if (dList != null && dList.size() > 0) {
+									TblDev dev = dList.get(0);
+									if (!StringUtils.isEmpty(newDevNo)) {
+										dev.setDevNo(newDevNo);
+									}
+									dev.setDevName(devName);
+									this.devService.update(dev);
+								}
+							}
+							key = "success";
+						}else{
+							key = "fail";
+						}
+					}else{
+						key = "pictype";
+					}
+				}
+			}
+			pw.print("{'key':'"+key+"'}");
+			pw.flush();
+			pw.close();
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+	}
 	
 	public String getRows() {
 		return rows;
@@ -642,5 +767,19 @@ public class DevAction extends BaseAction {
 	public void setDev(TblDev dev) {
 		this.dev = dev;
 	}
+	public File getUpload() {
+		return upload;
+	}
 
+	public void setUpload(File upload) {
+		this.upload = upload;
+	}
+
+	public String getUploadFileName() {
+		return uploadFileName;
+	}
+
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
 }

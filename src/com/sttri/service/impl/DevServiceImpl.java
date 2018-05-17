@@ -65,4 +65,11 @@ public class DevServiceImpl implements IDevService {
 		}
 	}
 
+	@Override
+	public List<TblDev> getResultList(String wherejpql,
+			LinkedHashMap<String, String> orderby) {
+		// TODO Auto-generated method stub
+		return dao.getResultList(TblDev.class, wherejpql, orderby);
+	}
+
 }

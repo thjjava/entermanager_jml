@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sttri.bean.QueryResult;
 import com.sttri.dao.CommonDao;
 
+@SuppressWarnings("deprecation")
 public class CommonDaoImpl extends HibernateDaoSupport implements CommonDao{
 	public void clear(){
 		getSession().clear();
