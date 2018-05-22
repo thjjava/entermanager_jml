@@ -720,7 +720,10 @@ public class DevAction extends BaseAction {
 								List<TblDev> dList = this.devService.getResultList(" o.devNo=?", null,new Object[]{oldDevNo});
 								if (dList != null && dList.size() > 0) {
 									TblDev dev = dList.get(0);
-									if (!StringUtils.isEmpty(newDevNo)) {
+									List<TblDev> list = this.devService.getResultList(" o.devNo=?", null,new Object[]{newDevNo});
+									if (list !=null && list.size() >0) {
+										dev.setDevNo(oldDevNo);
+									}else {
 										dev.setDevNo(newDevNo);
 									}
 									dev.setDevName(devName);
