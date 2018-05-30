@@ -18,7 +18,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -720,13 +719,16 @@ public class DevAction extends BaseAction {
 								List<TblDev> dList = this.devService.getResultList(" o.devNo=?", null,new Object[]{oldDevNo});
 								if (dList != null && dList.size() > 0) {
 									TblDev dev = dList.get(0);
-									List<TblDev> list = this.devService.getResultList(" o.devNo=?", null,new Object[]{newDevNo});
-									if (list !=null && list.size() >0) {
-										dev.setDevNo(oldDevNo);
-									}else {
-										dev.setDevNo(newDevNo);
+									if (!Util.isChinese(newDevNo)) {
+										List<TblDev> list = this.devService.getResultList(" o.devNo=?", null,new Object[]{newDevNo});
+										if (list !=null && list.size() >0) {
+											dev.setDevNo(oldDevNo);
+										}else {
+											dev.setDevNo(newDevNo);
+										}
 									}
 									dev.setDevName(devName);
+									dev.setEditTime(Util.dateToStr(new Date()));
 									this.devService.update(dev);
 								}
 							}

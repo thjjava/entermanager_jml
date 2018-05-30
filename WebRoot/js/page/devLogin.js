@@ -23,6 +23,7 @@ var tcolumn=[[
 					}
 				}
 			},
+			{field:'addTime',title:'最近登录日期',width:120,sortable:true,align:'center'},
 			{field:'lastLoginTime',title:'上次登录日期',width:120,sortable:true,align:'center'}
 			]];
 			

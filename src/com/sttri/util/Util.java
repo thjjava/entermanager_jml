@@ -1778,17 +1778,30 @@ public class Util implements java.io.Serializable {
 		return dateToStr(result);
     }
     
+    // 判断一个字符串是否含有中文  
+    public static boolean isChinese(String str) {  
+    	String regEx = "[\\u4e00-\\u9fa5]";        
+        Pattern p = Pattern.compile(regEx);        
+        Matcher m = p.matcher(str);
+        while (m.find()) { //m.matches()只要有一个匹配就返回true  
+             return true; 
+        }
+        return false;  
+    } 
+    
 	public static void main(String[] args) {
 		/*System.out.println(getUUID(6));
 		System.out.println(getUUID(6));
 		System.out.println(getUUID(6));*/
 		
-		try {
+		/*try {
 			System.out.println(utcDateFormatter("2018-01-29T06:31:17Z"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
+		String str = "中文fdas ";
+		System.err.println(isChinese(str));
 	}
 }
 	
