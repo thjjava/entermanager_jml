@@ -69,6 +69,14 @@
 								</select>
 							</td>
 							<td bgcolor="#ffffff" align="center">
+								是否启用：
+								<select id="queryIsAble" style="width: 180px;">
+									<option value="">--全部--</option>
+									<option value="0">启用</option>
+									<option value="1">禁用</option>
+								</select>
+							</td>
+							<td bgcolor="#ffffff" align="center">
 								<a class="easyui-linkbutton" href="javascript:void(0)"
 									iconCls="icon-search"
 									onclick="query();">查询</a>

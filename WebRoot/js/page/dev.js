@@ -115,7 +115,7 @@ function init(){
 function query(){
     var queryDevNo=$('#queryDevNo').val();
     var groupId=$("#groupId").val();
-	$('#'+render).datagrid('reload', {"queryDevNo":queryDevNo,"queryDevName":$('#queryDevName').val(),'queryIsGroup':$('#queryIsGroup').val(),"groupId":groupId});
+	$('#'+render).datagrid('reload', {"queryDevNo":queryDevNo,"queryDevName":$('#queryDevName').val(),'queryIsGroup':$('#queryIsGroup').val(),"groupId":groupId,'queryIsAble':$('#queryIsAble').val()});
 }
 
 function isAble(id,online,isAble){
@@ -413,7 +413,12 @@ function importExcel(){
 	    		var d = eval('('+data+')');
 	    		if(d!=null){
 	    			if(d.key=='success'){
-	    				$.messager.alert('提示',"导入成功!");
+	    				var msg = d.msg;
+	    				if(msg.split(',').length >1){
+	    					$.messager.alert('提示',msg);
+	    				}else{
+	    					$.messager.alert('提示',"导入成功!");
+	    				}
 	    				closeDiv('importWindow');
 	    				init();
 	    			}else if(d.key=='pictype'){

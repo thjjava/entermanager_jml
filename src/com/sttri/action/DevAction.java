@@ -82,6 +82,7 @@ public class DevAction extends BaseAction {
 		String queryDevNo = Util.dealNull(request.getParameter("queryDevNo"));
 		String queryDevName = Util.dealNull(request.getParameter("queryDevName"));
 		String queryIsGroup = Util.dealNull(request.getParameter("queryIsGroup"));
+		String queryIsAble = Util.dealNull(request.getParameter("queryIsAble"));
 		String groupId = Util.dealNull(request.getParameter("groupId"));
 		TblUser u = WorkUtil.getCurrUser(request);
 		PageView<TblDev> pageView = new PageView<TblDev>(row, pages);
@@ -99,7 +100,10 @@ public class DevAction extends BaseAction {
 			if(!"".equals(queryDevName)){
 				jpql.append("and o.devName like '%"+queryDevName+"%' ");
 			}
-			
+			if (!"".equals(queryIsAble)) {
+				jpql.append(" and o.isAble = ?");
+				param.add(Integer.parseInt(queryIsAble));
+			}
 			JSONArray array = new JSONArray();
 			if (u.getGroupId() != null || (groupId != null && !"".equals(groupId))) {
 				if (groupId == null || "".equals(groupId)) {
@@ -630,6 +634,9 @@ public class DevAction extends BaseAction {
 		}
 	} */
 	
+	/**
+	 * 批量导出设备账号信息
+	 */
 	public void exportDevsToExcel(){
 		response.setCharacterEncoding("UTF-8");
 		String devNo = Util.dealNull(request.getParameter("devNo"));
@@ -692,6 +699,7 @@ public class DevAction extends BaseAction {
 			PrintWriter pw = response.getWriter();
 			String saveFilePath = ServletActionContext.getServletContext().getRealPath(File.separator);
 			String wjml = "",key = "";
+			StringBuffer sb = new StringBuffer("下面行数的设备编号更新失败：【");
 			boolean createFolder = CreateFile.createFolder(saveFilePath+wjml);
 			if(createFolder){
 				if(upload!=null){
@@ -721,15 +729,20 @@ public class DevAction extends BaseAction {
 									TblDev dev = dList.get(0);
 									if (!Util.isChinese(newDevNo)) {
 										List<TblDev> list = this.devService.getResultList(" o.devNo=?", null,new Object[]{newDevNo});
-										if (list !=null && list.size() >0) {
-											dev.setDevNo(oldDevNo);
+										if (list !=null && list.size() >0 && !oldDevNo.equals(newDevNo)) {
+//											dev.setDevNo(oldDevNo);
+											sb.append(++i+"行,");
 										}else {
 											dev.setDevNo(newDevNo);
 										}
+									}else {
+										sb.append(++i+"行,");
 									}
 									dev.setDevName(devName);
 									dev.setEditTime(Util.dateToStr(new Date()));
 									this.devService.update(dev);
+								}else {
+									sb.append(++i+"行,");
 								}
 							}
 							key = "success";
@@ -741,11 +754,13 @@ public class DevAction extends BaseAction {
 					}
 				}
 			}
-			pw.print("{'key':'"+key+"'}");
+			sb.append("】失败原因是旧设备编号不存在或者新设备编号已存在");
+			System.out.println(sb.toString());
+			pw.print("{'key':'"+key+"','msg':'"+sb.toString()+"'}");
 			pw.flush();
 			pw.close();
 		} catch (Exception e) {
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 	}
 	
