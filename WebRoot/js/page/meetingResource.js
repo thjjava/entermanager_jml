@@ -22,7 +22,7 @@ var tcolumn=[[
 			},
 			{field:'isMeeting',title:'是否在开会',width:120,sortable:true,align:'center',
 				formatter:function(val,rec){
-					if(rec.status == '1')
+					if(rec.isMeeting == '1')
 						return '<font color="green">是</font>';
 					else
 						return '<font color="red">否</font>';

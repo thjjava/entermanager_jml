@@ -153,7 +153,13 @@ function deleteobj(){
 						$('#'+render).datagrid('clearSelections');
 			     		$.messager.alert('提示',"更新数据成功!");
 			     		init();
-			     	}
+			     	}else if ("hasDev" == data) {
+			     		$.messager.alert('提示',"删除失败,该组织下分配有设备账号!");
+					}else if ("hasUser" == data) {
+			     		$.messager.alert('提示',"删除失败,该组织下分配有用户账号!");
+					}else {
+			     		$.messager.alert('提示',"删除失败,网络错误!");
+					}
 				});
 			}
         }

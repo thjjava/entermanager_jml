@@ -20,11 +20,12 @@ var tcolumn=[[
 						return '无';
 				}
 			},
-			{field:'answer1',title:'仪式感',width:120,sortable:true,align:'center'},
-			{field:'answer2',title:'昨日追踪',width:120,sortable:true,align:'center'},
-			{field:'answer3',title:'今日安排',width:120,sortable:true,align:'center'},
-			{field:'answer4',title:'经销商参会',width:120,sortable:true,align:'center'},
-			{field:'answer5',title:'参会人数',width:120,sortable:true,align:'center'},
+			{field:'answer1',title:'唱营销之歌',width:120,sortable:true,align:'center'},
+//			{field:'answer2',title:'昨日追踪',width:120,sortable:true,align:'center'},
+			{field:'answer6',title:'条码进店追踪',width:120,sortable:true,align:'center'},
+			{field:'answer3',title:'今日工作安排',width:120,sortable:true,align:'center'},
+			{field:'answer4',title:'经销商早会点评',width:120,sortable:true,align:'center'},
+			{field:'answer5',title:'参与沟通人数',width:120,sortable:true,align:'center'},
 			{field:'timeLen',title:'会议时长(分钟)',width:120,sortable:true,align:'center',
 				formatter:function(val,rec){
 					if(rec.timeLen > 30){

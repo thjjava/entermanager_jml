@@ -289,7 +289,20 @@ public class UserAction extends BaseAction {
 		try {
 			String ids = Util.dealNull(request.getParameter("ids"));
 			if(!"".equals(ids) && null!=ids){
-				userService.deletebyids(ids.split("_"));
+				String[] id = ids.split("_");
+				for (int i = 0; i < id.length; i++) {
+					//删除组织关系
+					List<UserGroup> ugList = this.userGroupService.getResultList(" o.userId=?", null, new Object[]{id[i]});
+					if (ugList != null && ugList.size() >0) {
+						this.userGroupService.deletebyid(ugList.get(0).getId());
+					}
+					//删除角色关系
+					List<UserRole> urList = this.userRoleService.getResultList(" o.user.id=?", null, new Object[]{id[i]});
+					if (urList != null && urList.size() >0) {
+						this.userRoleService.deletebyid(urList.get(0).getId());
+					}
+				}
+				userService.deletebyids(id);
 				PrintWriter pw = response.getWriter();
 				pw.print("success");
 				pw.flush();

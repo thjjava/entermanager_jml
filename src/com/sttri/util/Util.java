@@ -1794,12 +1794,12 @@ public class Util implements java.io.Serializable {
 		System.out.println(getUUID(6));
 		System.out.println(getUUID(6));*/
 		
-		/*try {
-			System.out.println(utcDateFormatter("2018-01-29T06:31:17Z"));
+		try {
+			System.out.println(utcDateFormatter("2018-07-29T23:22:22Z"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		String str = "中文fdas ";
 		System.err.println(isChinese(str));
 	}

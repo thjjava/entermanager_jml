@@ -51,6 +51,7 @@ public class SysInit implements ServletContextListener {
 					ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
 					CommonDao dao = (CommonDao) ac.getBean("dao");
 					List<MeetingRecord> list = dao.getResultList(MeetingRecord.class, " o.status =?", null, new Object[]{1});
+					System.out.println("***会议进行中的个数***："+list.size());
 					for (int i = 0; i < list.size(); i++) {
 						MeetingRecord meetingRecord = list.get(i);
 						String zcode = meetingRecord.getZcode();
@@ -58,7 +59,8 @@ public class SysInit implements ServletContextListener {
 						JSONObject meetingDetail = MeetingApiUtil.getMeeting(zcode, meetingId);
 						int type = 1;
 						//status:会议状态  0-已结束 1-正进行
-						if (meetingDetail.get("code") == null && meetingDetail.getInt("status") == 0 && meetingDetail.getInt("status") != 1) {
+						if (meetingDetail.get("code") == null && meetingDetail.getInt("status") == 0 ) {
+							System.out.println("***该会议通账号已结束会议***"+zcode);
 							type=2;
 							meetingRecord.setStatus(0);
 							String meetingUuid = URLEncoder.encode(meetingRecord.getMeetingUuid(),"UTF-8");
@@ -78,6 +80,7 @@ public class SysInit implements ServletContextListener {
 							if (meetingResource.getIsMeeting() == 1) {
 								meetingResource.setIsMeeting(0);//是否正在开会  0-否 1-是
 								dao.update(meetingResource);
+								System.out.println("***更新会议通账号状态为未开会***"+zcode);
 							}
 						}
 					}

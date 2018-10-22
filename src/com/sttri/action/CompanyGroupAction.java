@@ -216,8 +216,13 @@ public class CompanyGroupAction extends BaseAction {
 			group.setComId(u.getCompany().getId());
 			group.setId(Util.getUUID(6));
 			group.setAddTime(Util.dateToStr(new Date()));
-			if(group.getPid().equals(""))
-				group.setPid("0");
+			if ("".equals(group.getPid())) {
+				if(u.getGroupId() == null || u.getGroupId().equals("")){
+					group.setPid("0");
+				}else {
+					group.setPid(u.getGroupId());
+				}
+			}
 			groupService.save(group);
 			
 			pw.print("success");
@@ -275,29 +280,49 @@ public class CompanyGroupAction extends BaseAction {
 	
 	public void deletebyids(){
 		response.setCharacterEncoding("UTF-8");
+		String ids = Util.dealNull(request.getParameter("ids"));
 		try {
-			String ids = Util.dealNull(request.getParameter("ids"));
+			PrintWriter pw = response.getWriter();
 			if(!"".equals(ids) && null!=ids){
 				String[] id = ids.split("_");
 				//先删除设备表组织关系和用户组织表的关系
 				for (int i = 0; i < id.length; i++) {
 					List<TblDev> dList = this.devService.getResultList("o.group.id=?", null, new Object[]{id[i]});
-					for (TblDev tblDev : dList) {
+					if (dList != null && dList.size() >0) {
+						pw.print("hasDev");
+						pw.flush();
+						pw.close();
+						return;
+					}
+					/*for (TblDev tblDev : dList) {
 						tblDev.setGroup(null);
 						this.devService.update(tblDev);
-					}
+					}*/
 					List<UserGroup> ugList = this.userGroupService.getResultList("o.groupId=?", null, new Object[]{id[i]});
-					for (UserGroup userGroup : ugList) {
+					if (ugList != null && ugList.size() >0) {
+						pw.print("hasUser");
+						pw.flush();
+						pw.close();
+						return;
+					}
+					/*for (UserGroup userGroup : ugList) {
 						userGroup.setGroupId("");
 						this.userGroupService.update(userGroup);
+					}*/
+					//更新子组织的父组织关系，将父组织改为该组织的父组织
+					CompanyGroup companyGroup = this.groupService.getById(id[i]);
+					List<CompanyGroup> cgList = this.groupService.getResultList(" o.pid=?", null, new Object[]{id[i]});
+					for (CompanyGroup childGroup : cgList) {
+						childGroup.setPid(companyGroup.getPid());
+						childGroup.setParentName(companyGroup.getParentName());
+						this.groupService.update(childGroup);
 					}
 				}
 				this.groupService.deletebyids(id);
-				PrintWriter pw = response.getWriter();
 				pw.print("success");
-				pw.flush();
-				pw.close();
 			}
+			pw.flush();
+			pw.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

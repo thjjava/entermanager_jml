@@ -35,6 +35,7 @@ public class UserQuestion implements java.io.Serializable {
 	private String curGroupName;//设备当前组织
 	private String parentGroupName;//设备的上级组织
 	private String higherGroupName;//设备上上级组织
+	private Integer answer6;
 	
 	public UserQuestion() {
 	}
@@ -184,5 +185,14 @@ public class UserQuestion implements java.io.Serializable {
 
 	public void setHigherGroupName(String higherGroupName) {
 		this.higherGroupName = higherGroupName;
+	}
+	
+	@Column(name = "Answer6")
+	public Integer getAnswer6() {
+		return answer6;
+	}
+
+	public void setAnswer6(Integer answer6) {
+		this.answer6 = answer6;
 	}
 }
