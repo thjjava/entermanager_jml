@@ -182,7 +182,7 @@ function deleteobj(){
 						ids+="_"+rows[i].id;
 					}
 				}
-				$.post(path+"/mediaServer_deletebyids.do",{"ids":ids},function(data){ 　　
+				$.post(path+"/mediaServer_deletebyids.do",{"ids":ids},function(data){
 					if("success"==data){
 						$('#'+render).datagrid('clearSelections');
 			     		$.messager.alert('提示',"更新数据成功!");
