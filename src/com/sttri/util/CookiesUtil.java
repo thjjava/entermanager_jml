@@ -41,7 +41,7 @@ public class CookiesUtil {
 			return;
 		}
 		Delete(cName, request, response);
-		Cookie cookie = new Cookie(cName, cValue);
+		Cookie cookie = new Cookie(cName, Base64Util.encode(cValue));
 		cookie.setPath(cPath);
 		if(cDomain!=null) {
 			cookie.setDomain(cDomain);
@@ -105,7 +105,7 @@ public class CookiesUtil {
 							 return null;
 						 }else{
 							 cookies = null;
-							 return v;
+							 return Base64Util.decode(v);
 						 }
 					 }else {
 						 return null;
@@ -117,7 +117,7 @@ public class CookiesUtil {
 						 return null;
 					 }else{
 						 cookies = null;
-						 return v;
+						 return Base64Util.decode(v);
 					 }
 				 }
 			 }

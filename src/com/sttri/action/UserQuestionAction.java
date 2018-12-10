@@ -98,10 +98,11 @@ public class UserQuestionAction extends BaseAction {
 				map.put("curGroupName", "当前组织");
 				map.put("devName", "会议组织人");
 				map.put("answer1", "唱营销之歌");
-				map.put("answer6", "条码进店追踪");
+				map.put("answer6", "早会汇总表");
 //				map.put("answer2", "昨日追踪");
-				map.put("answer3", "今日工作安排");
-				map.put("answer4", "经销商早会点评");
+				map.put("answer3", "日线路检讨");
+				map.put("answer4", "经销商现场要求");
+				map.put("answer7", "重点项目追踪");
 				map.put("answer5", "参与沟通人数");
 				map.put("timeLen", "会议时长");
 				map.put("score", "得分");

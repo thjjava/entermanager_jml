@@ -22,9 +22,10 @@ var tcolumn=[[
 			},
 			{field:'answer1',title:'唱营销之歌',width:120,sortable:true,align:'center'},
 //			{field:'answer2',title:'昨日追踪',width:120,sortable:true,align:'center'},
-			{field:'answer6',title:'条码进店追踪',width:120,sortable:true,align:'center'},
-			{field:'answer3',title:'今日工作安排',width:120,sortable:true,align:'center'},
-			{field:'answer4',title:'经销商早会点评',width:120,sortable:true,align:'center'},
+			{field:'answer6',title:'早会汇总表',width:120,sortable:true,align:'center'},
+			{field:'answer3',title:'日线路检讨',width:120,sortable:true,align:'center'},
+			{field:'answer4',title:'经销商现场要求',width:120,sortable:true,align:'center'},
+			{field:'answer7',title:'重点项目追踪',width:120,sortable:true,align:'center'},
 			{field:'answer5',title:'参与沟通人数',width:120,sortable:true,align:'center'},
 			{field:'timeLen',title:'会议时长(分钟)',width:120,sortable:true,align:'center',
 				formatter:function(val,rec){
