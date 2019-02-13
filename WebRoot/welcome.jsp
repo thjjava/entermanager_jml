@@ -10,7 +10,7 @@ if(list == null || list.size() ==0){
 String androidUrl = Constant.readKey("androidUrl");
 String pcUrl = Constant.readKey("pcUrl");
 for(int i=0;i<list.size();i++){
-	if(list.get(i).getConType()==1){
+	if(list.get(i).getConType()==6){
 		androidUrl += list.get(i).getConPath();
 	}
 	if(list.get(i).getConType()==3){

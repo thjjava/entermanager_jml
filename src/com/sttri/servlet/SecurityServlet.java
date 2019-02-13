@@ -29,7 +29,8 @@ public class SecurityServlet extends HttpServlet implements Filter {
 
 	public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2) throws IOException, ServletException {
 	  	   HttpServletRequest request=(HttpServletRequest)arg0;   
-		   HttpServletResponse response  =(HttpServletResponse) arg1;    
+		   HttpServletResponse response  =(HttpServletResponse) arg1; 
+		   response.addHeader("x-frame-options","SAMEORIGIN");
 		   String account = (String)request.getSession().getAttribute("Account");
 		   String url=request.getRequestURI();   
 		   if("".equals(account) || null==account) {

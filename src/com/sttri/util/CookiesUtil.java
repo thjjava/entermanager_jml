@@ -43,6 +43,7 @@ public class CookiesUtil {
 		Delete(cName, request, response);
 		Cookie cookie = new Cookie(cName, Base64Util.encode(cValue));
 		cookie.setPath(cPath);
+		cookie.setHttpOnly(true);
 		if(cDomain!=null) {
 			cookie.setDomain(cDomain);
 		}
@@ -61,7 +62,7 @@ public class CookiesUtil {
 	 * @since 0.01
 	 */
 	public static boolean Delete(String cName,HttpServletRequest request,HttpServletResponse response) {
-		 Cookie[] cookies = request.getCookies();
+		Cookie[] cookies = request.getCookies();
 		 if(cookies==null){
 			 return false;
 		 }

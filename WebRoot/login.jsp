@@ -9,46 +9,45 @@
 			href="<%=path%>/js/themes/default/easyui.css" />
 		<link rel="stylesheet" type="text/css"
 			href="<%=path%>/js/themes/icon.css" />
-		<script type="text/javascript" src="<%=path%>/js/jquery.min.js"></script>
+		<script type="text/javascript" src="<%=path%>/js/jquery-1.11.1.min.js"></script>
 		<script type="text/javascript" src="<%=path%>/js/base64.js"></script>
 		<script>
-		function checkLogin(){
-			var form = document.forms[0];
-			var password=form.password;
-			var code=form.code;
-			var account=form.account;
-		    if(account.value==""){
-		    	account.focus();
-		    	$("#errorinfo").html("请输入帐号！");
-			    return false;
-		    }else if(password.value==""){
-		    alert(0);
-		    	password.focus();
-		   	    $("#errorinfo").html("请输入密码！");
-			    return false;
-		    }else if(code.value==""){
-		    	code.focus();
-		    	$("#errorinfo").html("请输入效验码！");
-		    	 return false;
-		    }else{
-			    var pwd = $("#password").val();
-				var b = new Base64();  
-				$("#pwd").val(b.encode(pwd));
-		    	return true;
-		  	}
-		  	
-		}
-		
-		$(document).ready(function(){
-			refurbishImgCode();
-		});
-		
-		//验证码
-		function refurbishImgCode() {
-			var url = '<%=path%>/servlet/vn?sign='+Math.round(Math.random()*10000000000)+'000000000000000000000000000000';
-			document.getElementById('picrandcode').src = url;
-		}
-	</script>
+			function checkLogin(){
+				var form = document.forms[0];
+				var password=form.password;
+				var code=form.code;
+				var account=form.account;
+			    if(account.value==""){
+			    	account.focus();
+			    	$("#errorinfo").html("请输入帐号！");
+				    return false;
+			    }else if(password.value==""){
+			    	password.focus();
+			   	    $("#errorinfo").html("请输入密码！");
+				    return false;
+			    }else if(code.value==""){
+			    	code.focus();
+			    	$("#errorinfo").html("请输入效验码！");
+			    	 return false;
+			    }else{
+				    var pwd = $("#password").val();
+					var b = new Base64();  
+					$("#pwd").val(b.encode(pwd));
+					$("#password").val(b.encode(pwd));
+			    	return true;
+			  	}
+			}
+			
+			$(document).ready(function(){
+				refurbishImgCode();
+			});
+			
+			//验证码
+			function refurbishImgCode() {
+				var url = '<%=path%>/servlet/vn?sign='+Math.round(Math.random()*10000000000)+'000000000000000000000000000000';
+				document.getElementById('picrandcode').src = url;
+			}
+		</script>
 	</head>
 	<body style="background-color: #f3f3f4;margin: 0 0 0 0;">
 		<form method="post" name="form" id="form"
