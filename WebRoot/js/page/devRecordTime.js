@@ -60,7 +60,8 @@ function exportExcel(){
 	var endTime = $('#addTimeEnd').val();
 	var devName = $('#queryDevName').val();
 	var groupId=$("#groupId").val();
-	window.location.href=path+'/devRecordTime_exportExcel.do?startTime='+startTime+'&endTime='+endTime+'&devName='+devName+'&groupId='+groupId;
+	alert(encodeURI(encodeURI(devName)));
+	window.location.href=path+'/devRecordTime_exportExcel.do?startTime='+startTime+'&endTime='+endTime+'&devName='+encodeURI(encodeURI(devName))+'&groupId='+groupId;
 }
 
 

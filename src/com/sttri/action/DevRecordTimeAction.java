@@ -1,6 +1,7 @@
 package com.sttri.action;
 
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -68,7 +69,7 @@ public class DevRecordTimeAction extends BaseAction {
 					jpql.append(" and o.addTime like '"+Util.dateToStr(new Date()).substring(0,10)+"%'");
 				}
 				if(!"".equals(devName)){
-					jpql.append(" and o.dev.devName like '%"+devName.trim()+"%'");
+					jpql.append(" and o.dev.devName like '%"+URLDecoder.decode(devName.trim(),"UTF-8")+"%'");
 				}
 				
 				JSONArray array = new JSONArray();
