@@ -109,7 +109,7 @@ public class LoginAction extends BaseAction{
 					hasErrorLogin +=1;
 					int lastLoginTimes = ERRORTIMES-hasErrorLogin;
 					request.getSession().setAttribute("hasErrorLogin", hasErrorLogin);
-					request.getSession().setAttribute("errorinfo", "密码不正确,剩余登录次数还有"+lastLoginTimes+"次！");
+					request.getSession().setAttribute("errorinfo", "账号或密码错误,剩余登录次数还有"+lastLoginTimes+"次！");
 					return "login";
 				}
 			}else {
@@ -119,7 +119,7 @@ public class LoginAction extends BaseAction{
 				return "login";
 			}
 		}else{
-			request.setAttribute("errorinfo", "用户名不存在！");
+			request.setAttribute("errorinfo", "账号或密码错误，请重新输入！");
 			return "login";
 		}
 		return "index";

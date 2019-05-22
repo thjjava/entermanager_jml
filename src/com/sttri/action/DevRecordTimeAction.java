@@ -23,6 +23,7 @@ import com.sttri.pojo.TblUser;
 import com.sttri.service.ICompanyGroupService;
 import com.sttri.service.IDevRecordTimeService;
 import com.sttri.service.IDevService;
+import com.sttri.util.CSVUtil;
 import com.sttri.util.Util;
 import com.sttri.util.WorkUtil;
 
@@ -92,7 +93,7 @@ public class DevRecordTimeAction extends BaseAction {
 				orderBy.put("addTime", "asc");
 				List<DevRecordTime> list = this.devRecordTimeService.getResultList(jpql.toString(),orderBy);
 				response.reset();//清除缓存
-				String fileName = "直播时长统计.xls";//文件名
+				String fileName = "直播时长统计.csv";//文件名
 				//设置下载文件名
 				response.addHeader("Content-Disposition", "attachment;filename="+
 				new String(fileName.getBytes("gb2312"),"iso8859-1"));
@@ -102,7 +103,8 @@ public class DevRecordTimeAction extends BaseAction {
 				map.put("recordEndTime", "直播结束时间");
 				map.put("timeLen", "直播时长");
 				response.setContentType("application/x-download");
-	        	com.sttri.util.ExcelUtil.ImportExcel(list, response.getOutputStream(), map, "直播时长统计");
+//	        	com.sttri.util.ExcelUtil.ImportExcel(list, response.getOutputStream(), map, "直播时长统计");
+	        	CSVUtil.createCSVFile(list, map, response.getOutputStream());
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -165,6 +167,8 @@ public class DevRecordTimeAction extends BaseAction {
 					jpql.append(" and o.addTime<=?");
 					param.add(Util.dateToStr(new Date()));
 				}
+			}else {
+				jpql.append(" and o.addTime like '"+Util.dateToStr(new Date()).substring(0,7)+"%'");
 			}
 			if(!"".equals(queryDevName)){
 				jpql.append(" and o.dev.devName like ?");
