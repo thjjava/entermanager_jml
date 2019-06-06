@@ -296,6 +296,10 @@ public class DevLogAction extends BaseAction {
 	}
 	
 	//手机端登录统计，以logType=0,设备成功开启直播为准
+	/**
+	 * 修改日期：2019-6-5
+	 * 修改原因：接口返回的参数是以饼图展示
+	 */
 	public void devLoginCount(){
 		response.setCharacterEncoding("UTF-8");
 		String queryTime = Util.dealNull(request.getParameter("queryTime"));
@@ -305,8 +309,6 @@ public class DevLogAction extends BaseAction {
 			JSONObject obj = new JSONObject();
 			TblUser u = WorkUtil.getCurrUser(request);
 			if (u != null) {
-				StringBuffer jpql = new StringBuffer("1 =1 ");
-				jpql.append(" and o.company.id =?");
 				JSONArray devArray = new JSONArray();
 				String jpqlStr = "";
 				if (u.getGroupId() != null || (groupId != null && !"".equals(groupId))) {
@@ -321,10 +323,8 @@ public class DevLogAction extends BaseAction {
 						}else {
 							jpqlStr = "('')";
 						}
-						jpql.append(" and o.id in "+ jpqlStr);
 					}
 				}
-				List<TblDev> devs = this.devService.getResultList(jpql.toString(), null,new Object[]{u.getCompany().getId()});
 				if ("".equals(queryTime)) {
 					queryTime = Util.dateToStr(new Date()).substring(0,10);
 				}
@@ -336,8 +336,8 @@ public class DevLogAction extends BaseAction {
 				obj.put("value", devLogs.size());
 				obj.put("name", "手机端已登录数("+(devLogs.size())+")");
 				array.add(obj);
-				obj.put("value", devs.size()-devLogs.size());
-				obj.put("name", "手机端未登录数("+(devs.size()-devLogs.size())+")");
+				obj.put("value", devArray.size()-devLogs.size());
+				obj.put("name", "手机端未登录数("+(devArray.size()-devLogs.size())+")");
 				array.add(obj);
 			}
 			System.out.println(array.toString());
@@ -349,6 +349,135 @@ public class DevLogAction extends BaseAction {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * 修改日期：2019-6-5
+	 * 修改原因：接口返回的参数是以柱状图展示，根据groupId,查询父节点为groupId的所有子节点拥有的设备总数和上线数
+	 */
+	public void devLoginCount1(){
+		response.setCharacterEncoding("UTF-8");
+		String queryTime = Util.dealNull(request.getParameter("queryTime"));
+		String groupId = Util.dealNull(request.getParameter("groupId"));
+		try {
+			JSONObject obj = new JSONObject();
+			JSONArray gArray = new JSONArray();
+			JSONArray totalArray = new JSONArray();
+			JSONArray onLineArray = new JSONArray();
+			TblUser u = WorkUtil.getCurrUser(request);
+			if (u != null) {
+				if (u.getGroupId() != null || (groupId != null && !"".equals(groupId))) {
+					if (groupId == null || "".equals(groupId)) {
+						groupId = u.getGroupId();
+					}
+				}else {
+					groupId = "0";
+				}
+				LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+				orderBy.put("addTime", "desc");
+				List<CompanyGroup> cList = this.groupService.getResultList(" o.comId =? and o.pid=?", orderBy, new Object[] {u.getCompany().getId(),groupId});
+				for(CompanyGroup group : cList) {
+					gArray.add(group.getGroupName());
+					JSONArray devArray = new JSONArray();
+					devArray = getArray(group.getId(),devArray);
+					totalArray.add(devArray.size());
+					int devLoginNum = getDevLoginNum(devArray, group.getId(), u.getCompany().getId(), queryTime);
+					onLineArray.add(devLoginNum);
+				}
+				obj.put("group", gArray);
+				obj.put("total", totalArray);
+				obj.put("onLine", onLineArray);
+			}
+			System.out.println("devLoginCount:"+obj.toString());
+			PrintWriter pw = response.getWriter();
+			pw.print(obj.toString());
+			pw.flush();
+			pw.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 修改日期：2019-6-5
+	 * 修改原因：接口返回的参数是以柱状图展示，根据groupId(可能是多个节点ID),查询该节点下的所拥有的设备总数和上线数
+	 */
+	public void devLoginCount2(){
+		response.setCharacterEncoding("UTF-8");
+		String queryTime = Util.dealNull(request.getParameter("queryTime"));
+		String groupId = Util.dealNull(request.getParameter("groupId"));
+		try {
+			JSONObject obj = new JSONObject();
+			JSONArray gArray = new JSONArray();
+			JSONArray totalArray = new JSONArray();
+			JSONArray onLineArray = new JSONArray();
+			TblUser u = WorkUtil.getCurrUser(request);
+			if (u != null) {
+				if (u.getGroupId() != null || (groupId != null && !"".equals(groupId))) {
+					if (groupId == null || "".equals(groupId)) {
+						groupId = u.getGroupId();
+					}
+				}else {
+					groupId = "0";
+				}
+				if ("".equals(queryTime)) {
+					queryTime = Util.dateToStr(new Date()).substring(0,10);
+				}
+				String[] groupIds = groupId.split(",");
+				for (int i = groupIds.length -1; i >= 0; i--) {
+					String gId = groupIds[i];
+					if (!"0".equals(gId)) {
+						CompanyGroup curGroup = this.groupService.getById(gId);
+						gArray.add(curGroup.getGroupName());
+						JSONArray devArray = new JSONArray();
+						devArray = getArray(gId,devArray);
+						totalArray.add(devArray.size());
+						int devLoginNum = getDevLoginNum(devArray, gId, u.getCompany().getId(), queryTime);
+						onLineArray.add(devLoginNum);
+					}else {
+						LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+						orderBy.put("addTime", "desc");
+						List<CompanyGroup> cList = this.groupService.getResultList(" o.comId =? and o.pid=?", orderBy, new Object[] {u.getCompany().getId(),gId});
+						for(CompanyGroup group : cList) {
+							gArray.add(group.getGroupName());
+							JSONArray devArray = new JSONArray();
+							devArray = getArray(group.getId(),devArray);
+							totalArray.add(devArray.size());
+							int devLoginNum = getDevLoginNum(devArray, gId, u.getCompany().getId(), queryTime);
+							onLineArray.add(devLoginNum);
+						}
+					}
+				}
+				obj.put("group", gArray);
+				obj.put("total", totalArray);
+				obj.put("onLine", onLineArray);
+			}
+			System.out.println("devLoginCount:"+obj.toString());
+			PrintWriter pw = response.getWriter();
+			pw.print(obj.toString());
+			pw.flush();
+			pw.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	//获取设备登录数
+	public int getDevLoginNum(JSONArray devArray,String gId,String comId,String queryTime) {
+		String jpqlStr = "";
+		if (devArray.size() > 0) {
+			jpqlStr = devArray.toString().replace("[", "(").replace("]", ")").replaceAll("\"", "'");
+		}else {
+			jpqlStr = "('')";
+		}
+		String hql =" select o from DevLog o where o.dev.company.id='"+comId+"' and o.logType=0 and o.addTime like '"+queryTime+"%' group by o.dev.id";
+		if (!"".equals(jpqlStr)) {
+			hql =" select o from DevLog o where o.dev.company.id='"+comId+"' and o.logType=0 and o.addTime like '"+queryTime+"%' and o.dev.id in "+ jpqlStr+" group by o.dev.id";
+		}
+		List<DevLog> devLogs = this.devLogService.getResultList(hql);
+		return devLogs.size();
 	}
 	
 	//手机端登录统计，以logType=5成功登录为准
@@ -414,7 +543,9 @@ public class DevLogAction extends BaseAction {
 		List<TblDev> devs = this.devService.getResultList("o.group.id=?", null, new Object[]{id});
 		if (devs != null && devs.size() >0) {
 			for (TblDev tblDev : devs) {
-				array.add(tblDev.getId());
+				if (!array.contains(tblDev.getId())) {
+					array.add(tblDev.getId());
+				}
 			}
 		}
 		
@@ -423,12 +554,14 @@ public class DevLogAction extends BaseAction {
 		if(gList != null && gList.size()>0){
 			for (CompanyGroup companyGroup : gList) {
 				String gid = companyGroup.getId();
-				List<TblDev> dList = this.devService.getResultList(" o.group.id=?", null, new Object[]{gid});
-				if (dList != null && dList.size() >0) {
-					for (TblDev tblDev : dList) {
-						array.add(tblDev.getId());
-					}
-				}
+//				List<TblDev> dList = this.devService.getResultList(" o.group.id=?", null, new Object[]{gid});
+//				if (dList != null && dList.size() >0) {
+//					for (TblDev tblDev : dList) {
+//						if (!array.contains(tblDev.getId())) {
+//							array.add(tblDev.getId());
+//						}
+//					}
+//				}
 				getArray(gid,array);//递归查询gid该节点的子节点
 			}
 		}

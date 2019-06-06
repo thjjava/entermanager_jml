@@ -33,13 +33,13 @@
 			</select> -->
 			<label>组织：</label>
 			<input type="hidden" name="groupId" id="groupId">
-			<input type="text" name="groupName" id="groupName" readonly="readonly" onclick="createGroupTree();"style="width:400px;height:20px;margin-right:30px;cursor: pointer;">
+			<input type="text" name="groupName" id="groupName" readonly="readonly" onclick="createGroupTree();"style="width:150px;height:20px;margin-right:30px;cursor: pointer;">
 			<label> 日期：</label>
 			<input type="text" readonly="readonly" id="addTimeStart" name="addTimeStart" onfocus="WdatePicker({startDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',maxDate:'%y-%M-%d',alwaysUseStartDate:true})" class="Wdate" style="width:180px;"/>
 			<a id="search" class="easyui-linkbutton" href="javascript:void(0)" iconCls="icon-search" onclick="query();" >查询</a>
 		</div>
 		
-		<div id="main" style="width: 700px;height:500px;padding:10px;"></div>
+		<div id="main" style="width: 600px;height:400px;padding:10px;"></div>
 		
 		<!-- 组织 -->
 		<div id="groupWindow" class="easyui-window" title="组织" closed="true"
@@ -64,18 +64,18 @@
 				var queryTime = $("#addTimeStart").val();
 				var groupId = $("#groupId").val();
 				showChart(queryTime,groupId);
-				self.setInterval("query()",120*1000);
+				self.setInterval("query()",30*1000);
 			});
 			
 			function showChart(queryTime,groupId){
 				myChart.showLoading();
-				$.post("<%=path%>/devLog_devLoginCount2.do",{"queryTime":queryTime,"groupId":groupId},function(result){
+				$.post("<%=path%>/devLog_devLoginCount.do",{"queryTime":queryTime,"groupId":groupId},function(result){
 					var data = eval("("+result+")");
 					if(data==''){
 						window.parent.location.href = window.location.protocol+'//'+window.location.host+'<%=path%>';
 					}
 					myChart.hideLoading();
-					/* myChart.setOption(
+					myChart.setOption(
 						option = {
 						    title : {
 						        text: '手机端登录数统计',
@@ -103,63 +103,7 @@
 						        }
 						    ],
 						    color:['green','red','yellow','blue']
-						}); */
-						myChart.setOption(
-							option = {
-							    tooltip : {
-							        trigger: 'axis',
-							        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-							            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-							        }
-							    },
-							    legend: {
-							        data: ['实际登录数', '应登录数']
-							    },
-							    grid: {
-							        left: '3%',
-							        right: '4%',
-							        bottom: '3%',
-							        containLabel: true
-							    },
-							    xAxis:  {
-							        type: 'value'
-							    },
-							    yAxis: {
-							        type: 'category',
-							        data: data.group
-							    },
-							    series: [
-							        {
-							            name: '实际登录数',
-							            type: 'bar',
-							            stack: '总量',
-							            barWidth : 30,//柱图宽度
-							            label: {
-							                normal: {
-							                    show: true,
-							                    position: 'insideRight'
-							                }
-							            },
-							            data: data.onLine
-							        },
-							        {
-							            name: '应登录数',
-							            type: 'bar',
-							            stack: '总量',
-							            barWidth : 30,//柱图宽度
-							            barCateGoryGap: '80%',
-							            label: {
-							                normal: {
-							                    show: true,
-							                    position: 'insideRight'
-							                }
-							            },
-							            data: data.total
-							        }
-							    ],
-							    color:['green','red','yellow','blue']
-							}
-						);
+						});
 				});
 			}
 			
@@ -191,12 +135,11 @@
 			var groupsetting = {
 				check: {
 					enable: true,
-					chkStyle: "checkbox",
-					chkboxType: { "Y": "", "N": "" } //Y:勾选（参数：p:影响父节点），N：不勾（参数s：影响子节点）[p 和 s 为参数]
+					chkStyle: "radio",
+					radioType: "all"
 				},
 				view: {
-					dblClickExpand: false,
-					selectedMulti: false  //允许同时选中多个节点。
+					dblClickExpand: false
 				},
 				data: {
 					simpleData: {
