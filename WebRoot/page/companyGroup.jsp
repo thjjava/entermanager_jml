@@ -135,7 +135,7 @@
 				<div region="south" border="false"
 					style="text-align: center; height: 30px; line-height: 30px;">
 					<a class="easyui-linkbutton" href="javascript:void(0)"
-						onclick="closeDiv('groupWindow');">关闭</a>
+						onclick="closeDiv('groupWindow');">确认</a>
 				</div>
 			</div>
 		</div>
@@ -153,7 +153,7 @@
 				<div region="south" border="false"
 					style="text-align: center; height: 30px; line-height: 30px;">
 					<a class="easyui-linkbutton" href="javascript:void(0)"
-						onclick="closeDiv('groupWindow2');">关闭</a>
+						onclick="closeDiv('groupWindow2');">确认</a>
 				</div>
 			</div>
 		</div>

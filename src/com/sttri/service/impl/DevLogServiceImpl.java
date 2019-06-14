@@ -60,5 +60,11 @@ public class DevLogServiceImpl implements IDevLogService {
 		dao.update(devLog);
 	}
 
+	@Override
+	public Integer loginCount(String sql) {
+		// TODO Auto-generated method stub
+		return dao.getLoginCount(DevLog.class, sql);
+	}
+
 
 }

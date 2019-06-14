@@ -252,7 +252,8 @@ public class DevLogAction extends BaseAction {
 						jpql.append(" and o.addTime<='"+Util.dateToStr(new Date())+"'");
 					}
 				}else {
-					jpql.append(" and o.addTime like '"+Util.dateToStr(new Date()).substring(0,10)+"%'");
+//					jpql.append(" and o.addTime like '"+Util.dateToStr(new Date()).substring(0,10)+"%'");
+					jpql.append(" and o.addTime > '"+Util.dateToStr(new Date()).substring(0,10)+" 00:00:00' and o.addTime <= '"+Util.dateToStr(new Date()).substring(0,10)+" 23:59:59'");
 				}
 				if(!"".equals(devNo)){
 					jpql.append(" and o.dev.devNo='"+devNo+"'");
@@ -328,16 +329,16 @@ public class DevLogAction extends BaseAction {
 				if ("".equals(queryTime)) {
 					queryTime = Util.dateToStr(new Date()).substring(0,10);
 				}
-				String hql =" select o from DevLog o where o.dev.company.id='"+u.getCompany().getId()+"' and o.logType=0 and o.addTime like '"+queryTime+"%' group by o.dev.id";
+				String hql =" select COUNT(DISTINCT o.dev.id) from DevLog o where o.dev.company.id='"+u.getCompany().getId()+"' and o.logType=0 and o.addTime > '"+queryTime+" 00:00:00' and o.addTime <= '"+queryTime+" 23:59:59'";
 				if (!"".equals(jpqlStr)) {
-					hql =" select o from DevLog o where o.dev.company.id='"+u.getCompany().getId()+"' and o.logType=0 and o.addTime like '"+queryTime+"%' and o.dev.id in "+ jpqlStr+" group by o.dev.id";
+					hql =" select COUNT(DISTINCT o.dev.id) from DevLog o where o.dev.company.id='"+u.getCompany().getId()+"' and o.logType=0 and o.addTime > '"+queryTime+" 00:00:00' and o.addTime <= '"+queryTime+" 23:59:59' and o.dev.id in "+ jpqlStr+" ";
 				}
-				List<DevLog> devLogs = this.devLogService.getResultList(hql);
-				obj.put("value", devLogs.size());
-				obj.put("name", "手机端已登录数("+(devLogs.size())+")");
+				int loginNum = this.devLogService.loginCount(hql);
+				obj.put("value", loginNum);
+				obj.put("name", "手机端已登录数("+(loginNum)+")");
 				array.add(obj);
-				obj.put("value", devArray.size()-devLogs.size());
-				obj.put("name", "手机端未登录数("+(devArray.size()-devLogs.size())+")");
+				obj.put("value", devArray.size()-loginNum);
+				obj.put("name", "手机端未登录数("+(devArray.size()-loginNum)+")");
 				array.add(obj);
 			}
 			System.out.println(array.toString());
@@ -381,7 +382,7 @@ public class DevLogAction extends BaseAction {
 					JSONArray devArray = new JSONArray();
 					devArray = getArray(group.getId(),devArray);
 					totalArray.add(devArray.size());
-					int devLoginNum = getDevLoginNum(devArray, group.getId(), u.getCompany().getId(), queryTime);
+					int devLoginNum = getDevLoginNum(devArray, u.getCompany().getId(), queryTime);
 					onLineArray.add(devLoginNum);
 				}
 				obj.put("group", gArray);
@@ -433,7 +434,7 @@ public class DevLogAction extends BaseAction {
 						JSONArray devArray = new JSONArray();
 						devArray = getArray(gId,devArray);
 						totalArray.add(devArray.size());
-						int devLoginNum = getDevLoginNum(devArray, gId, u.getCompany().getId(), queryTime);
+						int devLoginNum = getDevLoginNum(devArray, u.getCompany().getId(), queryTime);
 						onLineArray.add(devLoginNum);
 					}else {
 						LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
@@ -444,7 +445,7 @@ public class DevLogAction extends BaseAction {
 							JSONArray devArray = new JSONArray();
 							devArray = getArray(group.getId(),devArray);
 							totalArray.add(devArray.size());
-							int devLoginNum = getDevLoginNum(devArray, gId, u.getCompany().getId(), queryTime);
+							int devLoginNum = getDevLoginNum(devArray, u.getCompany().getId(), queryTime);
 							onLineArray.add(devLoginNum);
 						}
 					}
@@ -465,19 +466,19 @@ public class DevLogAction extends BaseAction {
 	}
 	
 	//获取设备登录数
-	public int getDevLoginNum(JSONArray devArray,String gId,String comId,String queryTime) {
+	public int getDevLoginNum(JSONArray devArray,String comId,String queryTime) {
 		String jpqlStr = "";
 		if (devArray.size() > 0) {
 			jpqlStr = devArray.toString().replace("[", "(").replace("]", ")").replaceAll("\"", "'");
 		}else {
 			jpqlStr = "('')";
 		}
-		String hql =" select o from DevLog o where o.dev.company.id='"+comId+"' and o.logType=0 and o.addTime like '"+queryTime+"%' group by o.dev.id";
+		String hql =" select COUNT(DISTINCT o.dev.id) from DevLog o where o.dev.company.id='"+comId+"' and o.logType=0 and o.addTime > '"+queryTime+" 00:00:00' and o.addTime <= '"+queryTime+" 23:59:59'";
 		if (!"".equals(jpqlStr)) {
-			hql =" select o from DevLog o where o.dev.company.id='"+comId+"' and o.logType=0 and o.addTime like '"+queryTime+"%' and o.dev.id in "+ jpqlStr+" group by o.dev.id";
+			hql =" select COUNT(DISTINCT o.dev.id) from DevLog o where o.dev.company.id='"+comId+"' and o.logType=0 and o.addTime > '"+queryTime+" 00:00:00' and o.addTime <= '"+queryTime+" 23:59:59' and o.dev.id in "+ jpqlStr+" ";
 		}
-		List<DevLog> devLogs = this.devLogService.getResultList(hql);
-		return devLogs.size();
+//		List<DevLog> devLogs = this.devLogService.getResultList(hql);
+		return this.devLogService.loginCount(hql);
 	}
 	
 	//手机端登录统计，以logType=5成功登录为准
@@ -513,16 +514,16 @@ public class DevLogAction extends BaseAction {
 				if ("".equals(queryTime)) {
 					queryTime = Util.dateToStr(new Date()).substring(0,10);
 				}
-				String hql =" select o from DevLog o where o.dev.company.id='"+u.getCompany().getId()+"' and o.logType=5 and o.addTime like '"+queryTime+"%' group by o.dev.id";
+				String hql =" select COUNT(DISTINCT o.dev.id) from DevLog o where o.dev.company.id='"+u.getCompany().getId()+"' and o.logType=5 and o.addTime > '"+queryTime+" 00:00:00' and o.addTime <= '"+queryTime+" 23:59:59'";
 				if (!"".equals(jpqlStr)) {
-					hql =" select o from DevLog o where o.dev.company.id='"+u.getCompany().getId()+"' and o.logType=5 and o.addTime like '"+queryTime+"%' and o.dev.id in "+ jpqlStr+" group by o.dev.id";
+					hql =" select COUNT(DISTINCT o.dev.id) from DevLog o where o.dev.company.id='"+u.getCompany().getId()+"' and o.logType=5 and o.addTime > '"+queryTime+" 00:00:00' and o.addTime <= '"+queryTime+" 23:59:59' and o.dev.id in "+ jpqlStr+" ";
 				}
-				List<DevLog> devLogs = this.devLogService.getResultList(hql);
-				obj.put("value", devLogs.size());
-				obj.put("name", "远程客户端已登录数("+(devLogs.size())+")");
+				int loginNum = this.devLogService.loginCount(hql);
+				obj.put("value", loginNum);
+				obj.put("name", "远程客户端已登录数("+(loginNum)+")");
 				array.add(obj);
-				obj.put("value", devs.size()-devLogs.size());
-				obj.put("name", "远程客户端未登录数("+(devs.size()-devLogs.size())+")");
+				obj.put("value", devs.size()-loginNum);
+				obj.put("name", "远程客户端未登录数("+(devs.size()-loginNum)+")");
 				array.add(obj);
 			}
 			System.out.println(array.toString());

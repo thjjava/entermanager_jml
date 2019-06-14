@@ -34,4 +34,6 @@ public interface IDevLogService {
 
 	public void deletebyid(Object id);
 	
+	public Integer loginCount(String sql);
+	
 }

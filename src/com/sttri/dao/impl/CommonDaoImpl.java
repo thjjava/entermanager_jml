@@ -48,9 +48,13 @@ public class CommonDaoImpl extends HibernateDaoSupport implements CommonDao{
 		return (Long) getSession().createQuery("select count(o.id) from "+ getEntityName(entityClass)+ " o").uniqueResult();
 	} 
 	//登陆次数
-	public <T> void getLoginCount(Class<T> entityClass){
-		getSession().createQuery("update "+ getEntityName(entityClass)+ " o set lonigNum=loginNum+1");
+	public <T> Integer getLoginCount(Class<T> entityClass,String sql){
+		Query query = getSession().createQuery(sql);
+		query.setCacheable(true);
+		Long value = (Long)query.uniqueResult();
+		return value.intValue();
 	}
+	
 	//最大的max
 	public <T> long getMax(Class<T> entityClass){
 		return (Integer) getSession().createQuery("select max(o.id) from "+ getEntityName(entityClass)+ " o").uniqueResult();
@@ -207,7 +211,9 @@ public class CommonDaoImpl extends HibernateDaoSupport implements CommonDao{
 	
 	@SuppressWarnings("unchecked")
 	public <T> List<T> getResultList(Class<T> entityClass, String wherejpql){
-	    return (List<T>)getHibernateTemplate().find(wherejpql);
+		Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(wherejpql);
+		query.setCacheable(true);
+	    return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")

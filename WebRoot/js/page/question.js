@@ -39,7 +39,7 @@ var tcolumn=[[
 /**
  * 菜单栏
  */
-var tbar=[{ 
+var tbar=[/*{ 
 			id:'btnadd',
 			text:'新增',
 			iconCls:'icon-add',
@@ -48,7 +48,7 @@ var tbar=[{
 				resetForm(wform);
 				openDiv(win);
 			}
-		 },'-',{ 
+		 },'-',*/{ 
 			id:'btnedit',
 			text:'修改',
 			iconCls:'icon-edit',
@@ -137,15 +137,12 @@ function queryObjectbyID(url){
 				$('input[name="question.editUser"]').val(arry.editUser);
 				$('select[name="question.type"]').val(arry.type);
 				$('input[name="question.addTime"]').val(arry.addTime);
-				$('input[name="question.answer1"]').val(arry.answer1);
-				$('input[name="question.answer2"]').val(arry.answer2);
-				$('input[name="question.answer3"]').val(arry.answer3);
-				$('input[name="question.answer4"]').val(arry.answer4);
-				if(arry.type==2){
+				$('input[name="question.answerNo"]').val(arry.answerNo);
+				/*if(arry.type==2){
 					$("#tr1,#tr2,#tr3,#tr4").show();
 				}else{
 					$("#tr1,#tr2,#tr3,#tr4").hide();
-				}
+				}*/
 				openDiv(win);
 			}else{
 				$.messager.alert('提示','信息不存在！');

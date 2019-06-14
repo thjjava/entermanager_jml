@@ -80,7 +80,7 @@ public interface CommonDao{
 	/**
 	 * 统计登陆次数
 	 */
-	public <T> void getLoginCount(Class<T> entityClass);
+	public <T> Integer getLoginCount(Class<T> entityClass,String sql);
 	
 	/**
 	 * 获取分页数据

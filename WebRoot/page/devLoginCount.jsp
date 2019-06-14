@@ -39,7 +39,7 @@
 			<a id="search" class="easyui-linkbutton" href="javascript:void(0)" iconCls="icon-search" onclick="query();" >查询</a>
 		</div>
 		
-		<div id="main" style="width: 700px;height:500px;padding:10px;"></div>
+		<div id="main" style="width: 800px;height:800px;"></div>
 		
 		<!-- 组织 -->
 		<div id="groupWindow" class="easyui-window" title="组织" closed="true"
@@ -54,7 +54,7 @@
 				<div region="south" border="false"
 					style="text-align: center; height: 30px; line-height: 30px;">
 					<a class="easyui-linkbutton" href="javascript:void(0)"
-						onclick="closeDiv('groupWindow');">关闭</a>
+						onclick="closeDiv('groupWindow');">确定</a>
 				</div>
 			</div>
 		</div>
@@ -64,7 +64,7 @@
 				var queryTime = $("#addTimeStart").val();
 				var groupId = $("#groupId").val();
 				showChart(queryTime,groupId);
-				self.setInterval("query()",120*1000);
+				self.setInterval("query()",60*1000);
 			});
 			
 			function showChart(queryTime,groupId){
@@ -118,36 +118,38 @@
 							    grid: {
 							        left: '3%',
 							        right: '4%',
-							        bottom: '3%',
+							        bottom: '0%',
 							        containLabel: true
 							    },
 							    xAxis:  {
-							        type: 'value'
+							    	splitLine: {show: false}
 							    },
 							    yAxis: {
-							        type: 'category',
+							        axisTick: {show: false},
 							        data: data.group
 							    },
+							    animationDurationUpdate: 1200,
 							    series: [
 							        {
 							            name: '实际登录数',
 							            type: 'bar',
-							            stack: '总量',
-							            barWidth : 30,//柱图宽度
+							        	barMaxWidth: 30,
 							            label: {
 							                normal: {
 							                    show: true,
 							                    position: 'insideRight'
 							                }
 							            },
+							            z: 10,
 							            data: data.onLine
 							        },
 							        {
 							            name: '应登录数',
 							            type: 'bar',
-							            stack: '总量',
-							            barWidth : 30,//柱图宽度
-							            barCateGoryGap: '80%',
+							            silent: true,
+							    		barMaxWidth: 30,
+							            barCategoryGap: '20%',
+							            barGap: '-100%',
 							            label: {
 							                normal: {
 							                    show: true,

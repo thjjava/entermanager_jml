@@ -85,6 +85,7 @@
 									<input type="text" name="question.status" id="status">
 									<input type="text" name="question.editUser" id="editUser">
 									<input type="text" name="question.addTime" id="addTime">
+									<input type="text" name="question.answerNo" id="answerNo">
 								</td>
 							</tr>
 							<tr>
@@ -107,7 +108,7 @@
 									<input type="text" name="question.question" id="question">
 								</td>
 							</tr>
-							<tr id="tr1">
+							<!-- <tr id="tr1">
 								<td align="right" width="30%;">
 									答案1：
 								</td>
@@ -138,7 +139,7 @@
 								<td>
 									<input type="text" name="question.answer4" id="answer4">
 								</td>
-							</tr>
+							</tr> -->
 						</table>
 					</form>
 				</div>

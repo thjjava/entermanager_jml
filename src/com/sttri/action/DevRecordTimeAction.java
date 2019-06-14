@@ -67,7 +67,8 @@ public class DevRecordTimeAction extends BaseAction {
 						jpql.append(" and o.addTime<='"+Util.dateToStr(new Date())+"'");
 					}
 				}else {
-					jpql.append(" and o.addTime like '"+Util.dateToStr(new Date()).substring(0,10)+"%'");
+//					jpql.append(" and o.addTime like '"+Util.dateToStr(new Date()).substring(0,10)+"%'");
+					jpql.append(" and o.addTime > '"+Util.dateToStr(new Date()).substring(0,10)+" 00:00:00' and o.addTime <= '"+Util.dateToStr(new Date()).substring(0,10)+" 23:59:59'");
 				}
 				if(!"".equals(devName)){
 					jpql.append(" and o.dev.devName like '%"+URLDecoder.decode(devName.trim(),"UTF-8")+"%'");

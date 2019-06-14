@@ -122,6 +122,7 @@ public class QuestionAction extends BaseAction {
 			PrintWriter pw = response.getWriter();
 			question.setEditTime(Util.dateToStr(new Date()));
 			this.questionService.update(question);
+			pw.print("success");
 			pw.flush();
 			pw.close();
 		} catch (Exception e) {
