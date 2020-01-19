@@ -210,7 +210,11 @@ function deleteobj(){
 						$('#'+render).datagrid('clearSelections');
 			     		$.messager.alert('提示',"更新数据成功!");
 			     		init();
-			     	}
+			     	}else if ("unDelSelf" == data) {
+			     		$('#'+render).datagrid('clearSelections');
+			     		$.messager.alert('提示',"不能删除当前正在登录使用的账号!");
+			     		init();
+					}
 				});
 			}
         }

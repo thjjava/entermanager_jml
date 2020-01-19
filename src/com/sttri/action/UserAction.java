@@ -34,6 +34,7 @@ import com.sttri.service.IUserService;
 import com.sttri.util.Util;
 import com.sttri.util.WorkUtil;
 
+
 public class UserAction extends BaseAction {
 	private static final long serialVersionUID = 1L;
 	
@@ -284,12 +285,20 @@ public class UserAction extends BaseAction {
 		return null;
 	}
 	
-	public String deletebyids(){
+	public void deletebyids(){
 		response.setCharacterEncoding("UTF-8");
 		try {
+			PrintWriter pw = response.getWriter();
 			String ids = Util.dealNull(request.getParameter("ids"));
 			if(!"".equals(ids) && null!=ids){
 				String[] id = ids.split("_");
+				TblUser user = WorkUtil.getCurrUser(request);
+				if (ids.contains(user.getId())) {
+					pw.print("unDelSelf");
+					pw.flush();
+					pw.close();
+					return;
+				}
 				for (int i = 0; i < id.length; i++) {
 					//删除组织关系
 					List<UserGroup> ugList = this.userGroupService.getResultList(" o.userId=?", null, new Object[]{id[i]});
@@ -303,7 +312,6 @@ public class UserAction extends BaseAction {
 					}
 				}
 				userService.deletebyids(id);
-				PrintWriter pw = response.getWriter();
 				pw.print("success");
 				pw.flush();
 				pw.close();
@@ -311,7 +319,6 @@ public class UserAction extends BaseAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
 	}
 	
 	/**

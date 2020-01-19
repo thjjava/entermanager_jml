@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -21,6 +22,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.sttri.dao.CommonDao;
 import com.sttri.pojo.TblControl;
+import com.sttri.pojo.TblUser;
 
 
 public class SecurityServlet extends HttpServlet implements Filter {
@@ -38,6 +40,21 @@ public class SecurityServlet extends HttpServlet implements Filter {
 	            ServletContext servletContext = webApplicationContext.getServletContext();  
 	            ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(servletContext);
 	            CommonDao dao = (CommonDao)ac.getBean("dao");
+	            /*
+	             * 一键登录地址
+	             * http://localhost:8081/entermanager/index.jsp?tenantId=8057222368
+	             */
+	            String tenantId = request.getParameter("tenantId");
+	            if (StringUtils.isNotBlank(tenantId)) {
+	            	List<TblUser> users = dao.getResultList(TblUser.class, " o.accountType=? and o.company.tenantId=? ", null,new Object[] {0,tenantId});
+	            	if (users != null && users.size() > 0) {
+	            		request.getSession().setAttribute("isAdmin", true);
+						request.getSession().setAttribute("user", users.get(0));
+						request.getSession().setAttribute("Account", users.get(0).getAccount());
+						arg2.doFilter(arg0, arg1);   
+				        return;  
+					}
+				}
 	            List<TblControl> list = dao.getResultList(TblControl.class, " 1=1 ", null);
 	            request.setAttribute("list", list);
 	            //判断获取的路径不为空且不是访问登录页面或执行登录操作时跳转   

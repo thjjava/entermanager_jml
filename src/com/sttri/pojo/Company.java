@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * ÆóÒµ
+ * ï¿½ï¿½Òµ
  * @author xiaobai
  *
  */
@@ -26,6 +26,8 @@ public class Company implements java.io.Serializable {
 	private String editTime;
 	private String license;
 	private Integer hlsLiveFlag;
+	private String tenantId;
+	private String tenantKey;
 	
 	public Company() {
 	}
@@ -128,6 +130,24 @@ public class Company implements java.io.Serializable {
 
 	public void setHlsLiveFlag(Integer hlsLiveFlag) {
 		this.hlsLiveFlag = hlsLiveFlag;
+	}
+	
+	@Column(name = "TenantId", length = 32)
+	public String getTenantId() {
+		return this.tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+	
+	@Column(name = "TenantKey", length = 50)
+	public String getTenantKey() {
+		return this.tenantKey;
+	}
+
+	public void setTenantKey(String tenantKey) {
+		this.tenantKey = tenantKey;
 	}
 
 }
