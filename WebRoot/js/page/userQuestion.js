@@ -24,7 +24,7 @@ var tcolumn=[[
 //			{field:'answer2',title:'昨日追踪',width:120,sortable:true,align:'center'},
 			{field:'answer6',title:'业绩汇总、收入分析',width:120,sortable:true,align:'center'},
 			{field:'answer3',title:'早会汇总表、日线路检讨',width:120,sortable:true,align:'center'},
-			{field:'answer4',title:'四合一三要素推进',width:120,sortable:true,align:'center'},
+			{field:'answer4',title:'营销七大工法推进',width:120,sortable:true,align:'center'},
 			{field:'answer7',title:'早展售直播',width:120,sortable:true,align:'center'},
 			{field:'answer5',title:'参与沟通人数',width:120,sortable:true,align:'center'},
 			{field:'timeLen',title:'会议时长(分钟)',width:120,sortable:true,align:'center',
