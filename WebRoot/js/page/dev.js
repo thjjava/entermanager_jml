@@ -115,7 +115,7 @@ function init(){
 function query(){
     var queryDevNo=$('#queryDevNo').val();
     var groupId=$("#groupId").val();
-	$('#'+render).datagrid('reload', {"queryDevNo":queryDevNo,"queryDevName":$('#queryDevName').val(),'queryIsGroup':$('#queryIsGroup').val(),"groupId":groupId,'queryIsAble':$('#queryIsAble').val()});
+	$('#'+render).datagrid('reload', {"queryDevNo":queryDevNo,"queryDevName":$('#queryDevName').val(),'queryIsGroup':$('#queryIsGroup').val(),"groupId":groupId,'queryIsAble':$('#queryIsAble').val(),'queryIsOnLine':$('#queryIsOnLine').val()});
 }
 
 function isAble(id,online,isAble){

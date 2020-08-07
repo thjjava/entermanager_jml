@@ -84,6 +84,7 @@ public class DevAction extends BaseAction {
 		String queryIsGroup = Util.dealNull(request.getParameter("queryIsGroup"));
 		String queryIsAble = Util.dealNull(request.getParameter("queryIsAble"));
 		String groupId = Util.dealNull(request.getParameter("groupId"));
+		String queryIsOnLine = Util.dealNull(request.getParameter("queryIsOnLine"));
 		TblUser u = WorkUtil.getCurrUser(request);
 		PageView<TblDev> pageView = new PageView<TblDev>(row, pages);
 		List<Object> param = new ArrayList<Object>();
@@ -103,6 +104,10 @@ public class DevAction extends BaseAction {
 			if (!"".equals(queryIsAble)) {
 				jpql.append(" and o.isAble = ?");
 				param.add(Integer.parseInt(queryIsAble));
+			}
+			if (!"".equals(queryIsOnLine)) {
+				jpql.append(" and o.onLines = ?");
+				param.add(Integer.parseInt(queryIsOnLine));
 			}
 			JSONArray array = new JSONArray();
 			if (u.getGroupId() != null || (groupId != null && !"".equals(groupId))) {

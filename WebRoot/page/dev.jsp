@@ -60,12 +60,20 @@
 								设备名称：
 								<input type="text" id="queryDevName" style="width: 180px;">
 							</td>
-							<td bgcolor="#ffffff" align="center">
+							<%-- <td bgcolor="#ffffff" align="center">
 								是否分配组织：
 								<select id="queryIsGroup" style="width: 180px;">
 									<option value="">--全部--</option>
 									<option value="yes">已分配</option>
 									<option value="no">未分配</option>
+								</select>
+							</td> --%>
+							<td bgcolor="#ffffff" align="center">
+								是否在线：
+								<select id="queryIsOnLine" style="width: 180px;">
+									<option value="">--全部--</option>
+									<option value="0">在线</option>
+									<option value="1">离线</option>
 								</select>
 							</td>
 							<td bgcolor="#ffffff" align="center">
