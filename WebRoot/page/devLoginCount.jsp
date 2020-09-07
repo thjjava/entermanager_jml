@@ -198,7 +198,7 @@
 				},
 				view: {
 					dblClickExpand: false,
-					selectedMulti: false  //允许同时选中多个节点。
+					selectedMulti: true  //允许同时选中多个节点。
 				},
 				data: {
 					simpleData: {
@@ -225,8 +225,19 @@
 					names += nodes[i].name + ',';
 					ids += nodes[i].id + ','
 				}
-				if (names.length > 0 ) names = names.substring(0, names.length-1);
-				if (ids.length > 0 ) ids = ids.substring(0, ids.length-1);
+				if (names.length > 0 ) {
+					names = names.substring(0, names.length-1);
+				}
+				if (ids.length > 0 ) {
+					ids = ids.substring(0, ids.length-1);
+				}
+				var cnodes = zTree.getNodesByParam("pId", ids, null);
+				for (var k=0; k<cnodes.length; k++) {
+					var cnode = cnodes[k];
+					zTree.checkNode(cnode,true,false,null);
+					names += ',' + cnode.name;
+					ids += ',' + cnode.id;
+				}
 				$("#groupName").val(names);
 				$('#groupId').val(ids);
 			}

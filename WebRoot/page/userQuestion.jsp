@@ -5,7 +5,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>晨会自评管理</title>
+		<title>晨会质量管理</title>
 		<link rel="stylesheet" type="text/css"
 			href="../js/themes/default/easyui.css" />
 		<link rel="stylesheet" type="text/css"
