@@ -26,8 +26,8 @@ public class Company implements java.io.Serializable {
 	private String editTime;
 	private String license;
 	private Integer hlsLiveFlag;
-	private String tenantId;
-	private String tenantKey;
+//	private String tenantId;
+//	private String tenantKey;
 	
 	public Company() {
 	}
@@ -132,7 +132,7 @@ public class Company implements java.io.Serializable {
 		this.hlsLiveFlag = hlsLiveFlag;
 	}
 	
-	@Column(name = "TenantId", length = 32)
+	/*@Column(name = "TenantId", length = 32)
 	public String getTenantId() {
 		return this.tenantId;
 	}
@@ -148,6 +148,6 @@ public class Company implements java.io.Serializable {
 
 	public void setTenantKey(String tenantKey) {
 		this.tenantKey = tenantKey;
-	}
+	}*/
 
 }
