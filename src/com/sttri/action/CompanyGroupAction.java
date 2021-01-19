@@ -116,7 +116,9 @@ public class CompanyGroupAction extends BaseAction {
 	 */
 	public JSONArray getArray(String id,JSONArray array){
 		//查询组织表中，该ID的根节点下的所有子节点
-		List<CompanyGroup> gList = this.groupService.getResultList(" o.pid=?", null, id);
+		String sql = "select * from company_group where pid='"+id+"' order by convert(groupName USING GBK) ";
+		List<CompanyGroup> gList = groupService.getLocalSql(sql);
+//		List<CompanyGroup> gList = this.groupService.getResultList(" o.pid=?", null, id);
 		JSONObject ob = null;
 		if(gList != null && gList.size()>0){
 			for (CompanyGroup companyGroup : gList) {
@@ -140,7 +142,9 @@ public class CompanyGroupAction extends BaseAction {
 	 */
 	public JSONArray getGroupArray(String comId,JSONArray array){
 		JSONObject obj = null;
-		List<CompanyGroup> glist = groupService.getResultList("o.comId=?", null, comId);
+		String sql = "select * from company_group where comId='"+comId+"' order by convert(groupName USING GBK) ";
+		List<CompanyGroup> glist = groupService.getLocalSql(sql);
+//		List<CompanyGroup> glist = groupService.getResultList("o.comId=?", null, comId);
 		for(CompanyGroup g:glist){
 			obj = new JSONObject();
 			obj.put("id", g.getId());

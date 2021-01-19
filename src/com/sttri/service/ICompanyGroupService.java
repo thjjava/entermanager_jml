@@ -16,6 +16,7 @@ public interface ICompanyGroupService {
      */
 	public List<CompanyGroup> getResultList(String wherejpql,LinkedHashMap<String, String> orderby, Object... queryParams);
 
+	public List<CompanyGroup> getLocalSql(String wherejpql);
 	/**
 	 * 分页信息查询
 	 * */

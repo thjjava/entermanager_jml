@@ -117,4 +117,6 @@ public interface CommonDao{
 	public <T> List<T> getResultList(Class<T> entityClass,String wherejpql);
 	
 	public <T> List<T> getRandResultList(Class<T> entityClass,String wherejpql,int firstResult,int maxResult);
+	
+	public <T> List<T> getLocalSql(String wherejpql);
 }

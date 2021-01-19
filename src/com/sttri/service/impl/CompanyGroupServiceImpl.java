@@ -55,4 +55,10 @@ public class CompanyGroupServiceImpl implements ICompanyGroupService {
 		dao.update(companyGroup);
 	}
 
+	@Override
+	public List<CompanyGroup> getLocalSql(String wherejpql) {
+		// TODO Auto-generated method stub
+		return dao.getLocalSql(wherejpql);
+	}
+
 }

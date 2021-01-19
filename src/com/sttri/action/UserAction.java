@@ -121,9 +121,11 @@ public class UserAction extends BaseAction {
 				CompanyGroup group = this.groupService.getById(groupId);
 				if (!group.getPid().equals("0")) {
 					array = getArray(groupId,array);
-					String jpqlStr = array.toString().replace("[", "(").replace("]", ")").replaceAll("\"", "'");
-					if (array != null && !array.equals("")) {
+					if(array.size()!=0) {
+						String jpqlStr = array.toString().replace("[", "(").replace("]", ")").replaceAll("\"", "'");
 						jpql.append(" and o.id in "+ jpqlStr);
+					}else {
+						jpql.append(" and o.id in ('')");
 					}
 				}
 			}
